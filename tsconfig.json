@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noLib": false,
+    "skipLibCheck": true,
+    "lib": [
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "newLine": "LF",
+    "declaration": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+    "noImplicitAny": false
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}

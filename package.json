@@ -1,0 +1,72 @@
+{
+  "name": "vendure-reviews-plugin",
+  "description": "",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "repository": "git@github.com:jonyw4/vendure-webmaniabr-plugin.git",
+  "author": "Jonathan Célio <jonathan.clio@hotmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "watch": "tsc --watch",
+    "build": "rimraf lib && tsc",
+    "lint": "eslint --ext .ts,.tsx",
+    "lint:fix": "eslint --ext .ts,.tsx --fix",
+    "test": "npm run test:e2e",
+    "test:e2e": "rimraf e2e/__data__ && jest --config e2e/config/jest-config.js"
+  },
+  "peerDependencies": {
+    "@vendure/core": ">=0.14.0"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "9.1.1",
+    "@types/jest": "26.0.4",
+    "@typescript-eslint/eslint-plugin": "3.6.1",
+    "@typescript-eslint/parser": "3.6.1",
+    "@vendure-advanced-shipping/core": "2.1.1",
+    "@vendure/core": "0.14.0",
+    "@vendure/testing": "0.14.0",
+    "commitlint": "9.1.0",
+    "eslint": "7.4.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "husky": "4.2.5",
+    "jest": "26.1.0",
+    "ncp": "2.0.0",
+    "prettier": "2.0.5",
+    "rimraf": "3.0.2",
+    "semantic-release": "17.1.1",
+    "ts-jest": "26.1.3",
+    "typescript": "3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E  HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "never",
+        [
+          "start-case",
+          "pascal-case"
+        ]
+      ]
+    }
+  },
+  "release": {
+    "branches": [
+      "master"
+    ]
+  }
+}
