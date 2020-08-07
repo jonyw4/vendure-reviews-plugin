@@ -1,0 +1,9 @@
+{
+  "review":{
+    "error": {
+      "cannot-transition-review-from-to": "Cannot transition Review from \"{ fromState }\" to \"{ toState }\"",
+      "cannot-create-review-store": "You are not allowed to create a review"
+    }
+  }
+}
+  
