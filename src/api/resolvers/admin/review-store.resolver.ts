@@ -1,8 +1,9 @@
-import { Query, Mutation, Args } from '@nestjs/graphql';
+import { Query, Mutation, Args, Resolver } from '@nestjs/graphql';
 import { ReviewStoreService } from '../../../services/review-store.service';
 import { Permission, Ctx, RequestContext, Allow } from '@vendure/core';
 import { ReviewState } from '../../../helpers';
 
+@Resolver('ReviewStore')
 export class ReviewStoreAdminResolver {
   constructor(private reviewStoreService: ReviewStoreService) {}
 

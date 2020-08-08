@@ -1,16 +1,19 @@
 import { Transitions } from '@vendure/core';
 
 /** State of the review */
-export type ReviewState = 'Created' | 'Authorized' | 'Denied';
+export type ReviewState = 'Created' | 'Updated' | 'Authorized' | 'Denied';
 
 export const reviewStateTransitions: Transitions<ReviewState> = {
   Created: {
     to: ['Authorized', 'Denied']
   },
   Authorized: {
-    to: ['Created', 'Denied']
+    to: ['Updated', 'Denied']
+  },
+  Updated: {
+    to: ['Authorized', 'Denied']
   },
   Denied: {
-    to: ['Authorized', 'Created']
+    to: ['Authorized', 'Updated']
   }
 };

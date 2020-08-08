@@ -64,6 +64,7 @@ export class ReviewStoreService extends ReviewService<
    *
    * - Be Logged
    * - Have an account
+   * - Doesn't have an store review saved previously
    * - Have at least one order placed
    */
   async checkIfCustomerIsValidToCreateReviewStore(
@@ -72,6 +73,12 @@ export class ReviewStoreService extends ReviewService<
     const customer = await this.getCustomer(ctx);
 
     if (!customer) {
+      return false;
+    }
+
+    const customerReview = await this.findCustomerReview(ctx);
+
+    if (customerReview) {
       return false;
     }
 
