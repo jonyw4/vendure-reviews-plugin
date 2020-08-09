@@ -1,0 +1,8 @@
+vendure
+test-emails
+vendure.sqlite
+vendure-import-error.log
+dev-config-override.ts
+vendure.log
+admin-ui
+static

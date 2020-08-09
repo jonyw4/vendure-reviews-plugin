@@ -1,9 +1,11 @@
-import { commonApiExtensions } from './common';
 import gql from 'graphql-tag';
 
 export const adminApiExtensions = gql`
-  ${commonApiExtensions}
-  extend type Review {
+  type ReviewStore implements Node {
+    id: ID!
+    title: String!
+    description: String!
+    state: String!
     nextStates: [String!]!
   }
   type ReviewStoreList implements PaginatedList {
@@ -18,12 +20,12 @@ export const adminApiExtensions = gql`
     "Get the average of review store"
     avgReviewStore: Int
 
-    "Get the review store of the current customer"
-    reviewStore: ReviewStore
+    "Get the review store"
+    reviewStore(id: ID!): ReviewStore
 
     "Get the list of reviews store"
-    reviewsStore(options: PackageListOptions): ReviewStoreList!
+    reviewsStore(options: ReviewStoreListOptions): ReviewStoreList!
   }
 
-  input PackageListOptions
+  input ReviewStoreListOptions
 `;

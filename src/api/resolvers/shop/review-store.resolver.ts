@@ -8,6 +8,7 @@ import {
   IllegalOperationError
 } from '@vendure/core';
 import { ReviewStoreEntity } from '../../../entities/review-store.entity';
+import { MutationCreateReviewStoreArgs } from './../../../types/generated-shop-schema';
 
 @Resolver('ReviewStore')
 export class ReviewStoreShopResolver {
@@ -17,7 +18,7 @@ export class ReviewStoreShopResolver {
   @Allow(Permission.Owner)
   async createReviewStore(
     @Ctx() ctx: RequestContext,
-    @Args() args: any
+    @Args() args: MutationCreateReviewStoreArgs
   ): Promise<ReviewStoreEntity> {
     if (
       !(await this.reviewStoreService.checkIfCustomerIsValidToCreateReviewStore(

@@ -1,8 +1,11 @@
 import gql from 'graphql-tag';
-import { commonApiExtensions } from './common';
 
 export const shopApiExtensions = gql`
-  ${commonApiExtensions}
+  type ReviewStore implements Node {
+    id: ID!
+    title: String!
+    description: String!
+  }
   input CreateReviewStoreInput {
     title: String!
     description: String!

@@ -1,0 +1,13 @@
+overwrite: true
+generates:
+  ./src/types/generated-admin-schema.ts:
+    schema: "http://localhost:3000/admin-api"
+    plugins:
+      - typescript
+  ./src/types/generated-shop-schema.ts:
+    schema: "http://localhost:3000/shop-api"
+    plugins:
+      - typescript
+hooks:
+  afterAllFileWrite:
+    - npx eslint --fix

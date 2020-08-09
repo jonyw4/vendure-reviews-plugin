@@ -2,6 +2,11 @@ import { Query, Mutation, Args, Resolver } from '@nestjs/graphql';
 import { ReviewStoreService } from '../../../services/review-store.service';
 import { Permission, Ctx, RequestContext, Allow } from '@vendure/core';
 import { ReviewState } from '../../../helpers';
+import {
+  QueryReviewsStoreArgs,
+  QueryReviewStoreArgs,
+  MutationTransitionReviewStoreToStateArgs
+} from '../../../types/generated-admin-schema';
 
 @Resolver('ReviewStore')
 export class ReviewStoreAdminResolver {
@@ -9,13 +14,13 @@ export class ReviewStoreAdminResolver {
 
   @Query()
   @Allow(Permission.ReadOrder)
-  async reviewStore(@Args() { id }: any) {
+  async reviewStore(@Args() { id }: QueryReviewStoreArgs) {
     return this.reviewStoreService.findById(id);
   }
 
   @Query()
   @Allow(Permission.ReadOrder)
-  async reviewsStore(@Args() { options }: any) {
+  async reviewsStore(@Args() { options }: QueryReviewsStoreArgs) {
     return this.reviewStoreService.findAll(options || undefined);
   }
 
@@ -28,7 +33,7 @@ export class ReviewStoreAdminResolver {
   @Allow(Permission.UpdateOrder)
   async transitionReviewStoreToState(
     @Ctx() ctx: RequestContext,
-    @Args() args: any
+    @Args() args: MutationTransitionReviewStoreToStateArgs
   ) {
     return this.reviewStoreService.transitionToState(
       ctx,

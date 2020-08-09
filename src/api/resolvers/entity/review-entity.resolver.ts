@@ -6,7 +6,7 @@ import { ReviewStoreEntity } from '../../../entities';
 export class ReviewStoreAdminEntityResolver {
   constructor(private reviewStoreService: ReviewStoreService) {}
 
-  @ResolveField()
+  @ResolveField('nextStates')
   async nextStates(@Parent() reviewStore: ReviewStoreEntity) {
     return this.reviewStoreService.getNextReviewStates(reviewStore);
   }

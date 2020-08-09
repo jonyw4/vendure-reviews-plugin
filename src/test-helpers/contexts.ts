@@ -1,4 +1,4 @@
-import { RequestContext, LanguageCode, Channel, User } from '@vendure/core';
+import { RequestContext, LanguageCode, Channel } from '@vendure/core';
 
 const chanel = new Channel({});
 export const adminCtx = new RequestContext({
