@@ -6,20 +6,25 @@ import {
   examplesReviewStore,
   adminCtx
 } from '../../../test-helpers';
+import { createMock } from '@golevelup/nestjs-testing';
 
 describe('ReviewStoreAdminResolver', () => {
   let resolver: ReviewStoreAdminResolver;
+
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReviewStoreAdminResolver,
         {
           provide: ReviewStoreService,
-          useFactory: () => ({
-            getNPSAvg: jest.fn(() => 9),
-            findById: jest.fn(() => exampleReviewStore),
-            findAll: jest.fn(() => examplesReviewStore),
-            transitionToState: jest.fn(() => exampleReviewStore)
+          useValue: createMock<ReviewStoreService>({
+            getNPSAvg: async () => 9,
+            findById: async () => exampleReviewStore,
+            findAll: async () => ({
+              items: examplesReviewStore,
+              totalItems: 3
+            }),
+            transitionToState: async () => exampleReviewStore
           })
         }
       ]
@@ -38,7 +43,10 @@ describe('ReviewStoreAdminResolver', () => {
   });
   describe('reviewStore', () => {
     it('should get a review list properly', () => {
-      expect(resolver.reviewsStore({})).resolves.toBe(examplesReviewStore);
+      expect(resolver.reviewsStore({})).resolves.toBe({
+        items: examplesReviewStore,
+        totalItems: 3
+      });
     });
   });
   describe('avgReviewStore', () => {

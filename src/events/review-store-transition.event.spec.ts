@@ -1,5 +1,4 @@
 import { ReviewStoreStateTransitionEvent } from './review-store-transition.event';
-import { ReviewStoreEntity } from '../entities/review-store.entity';
 import { adminCtx, exampleReviewStore } from '../test-helpers';
 
 describe('ReviewStoreStateTransitionEvent', () => {

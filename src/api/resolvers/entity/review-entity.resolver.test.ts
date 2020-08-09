@@ -2,6 +2,7 @@ import { exampleReviewStore } from './../../../test-helpers/entities';
 import { ReviewStoreAdminEntityResolver } from './review-entity.resolver';
 import { ReviewStoreService } from '../../../services/review-store.service';
 import { TestingModule, Test } from '@nestjs/testing';
+import { createMock } from '@golevelup/nestjs-testing';
 
 describe('ReviewStoreAdminEntityResolver', () => {
   let resolver: ReviewStoreAdminEntityResolver;
@@ -11,8 +12,8 @@ describe('ReviewStoreAdminEntityResolver', () => {
         ReviewStoreAdminEntityResolver,
         {
           provide: ReviewStoreService,
-          useFactory: () => ({
-            getNextReviewStates: jest.fn(() => ['Created'])
+          useValue: createMock<ReviewStoreService>({
+            getNextReviewStates: () => ['Created']
           })
         }
       ]

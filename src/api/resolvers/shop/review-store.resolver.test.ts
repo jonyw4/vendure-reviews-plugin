@@ -3,25 +3,23 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { ReviewStoreService } from '../../../services/review-store.service';
 import { IllegalOperationError } from '@vendure/core';
 import { shopCtx, exampleReviewStore } from '../../../test-helpers';
+import { createMock } from '@golevelup/nestjs-testing';
 
 describe('ReviewStoreShopResolver', () => {
   let resolver: ReviewStoreShopResolver;
-  beforeAll(async () => {
+
+  const reviewStoreService = createMock<ReviewStoreService>({
+    getNPSAvg: async () => 9,
+    findCustomerReview: async () => exampleReviewStore,
+    create: async () => exampleReviewStore
+  });
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReviewStoreShopResolver,
         {
           provide: ReviewStoreService,
-          useFactory: () => ({
-            getNPSAvg: jest.fn(() => 9),
-            findCustomerReview: jest.fn(() => exampleReviewStore),
-            checkIfCustomerIsValidToCreateReviewStore: jest
-              .fn()
-              .mockReturnValue(true)
-              .mockReturnValueOnce(true)
-              .mockReturnValueOnce(false),
-            create: jest.fn(() => exampleReviewStore)
-          })
+          useValue: reviewStoreService
         }
       ]
     }).compile();
@@ -46,11 +44,17 @@ describe('ReviewStoreShopResolver', () => {
 
   describe('createReviewStore', () => {
     it('should create a review to store correctly', () => {
+      reviewStoreService.checkIfCustomerIsValidToCreateReviewStore.mockImplementation(
+        async () => true
+      );
       expect(
         resolver.createReviewStore(shopCtx, exampleReviewStore)
       ).resolves.toBe(exampleReviewStore);
     });
     it('should reject to create a review to store', () => {
+      reviewStoreService.checkIfCustomerIsValidToCreateReviewStore.mockImplementation(
+        async () => false
+      );
       expect(
         resolver.createReviewStore(shopCtx, exampleReviewStore)
       ).rejects.toThrow(IllegalOperationError);
