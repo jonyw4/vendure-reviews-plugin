@@ -1,4 +1,4 @@
-import { RequestContext, LanguageCode, Channel } from '@vendure/core';
+import { RequestContext, LanguageCode, Channel, User } from '@vendure/core';
 
 const chanel = new Channel({});
 export const adminCtx = new RequestContext({
@@ -9,7 +9,19 @@ export const adminCtx = new RequestContext({
   languageCode: LanguageCode.en
 });
 export const shopCtx = new RequestContext({
-  apiType: 'admin',
+  apiType: 'shop',
+  session: {
+    cacheExpiry: 1,
+    id: '1',
+    token: '123',
+    expires: new Date(),
+    user: {
+      id: '1',
+      identifier: '123',
+      verified: true,
+      channelPermissions: []
+    }
+  },
   isAuthorized: true,
   authorizedAsOwnerOnly: false,
   channel: chanel,

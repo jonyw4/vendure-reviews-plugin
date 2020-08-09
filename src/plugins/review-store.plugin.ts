@@ -21,4 +21,4 @@ import { adminApiExtensions, shopApiExtensions } from '../api/schema';
     resolvers: [ReviewStoreShopResolver]
   }
 })
-export class ReviewsPlugin {}
+export class ReviewsStorePlugin {}

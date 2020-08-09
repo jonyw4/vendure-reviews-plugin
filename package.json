@@ -26,11 +26,11 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "9.1.1",
+    "@golevelup/nestjs-testing": "^0.1.2",
     "@nestjs/testing": "^7.4.2",
     "@types/jest": "26.0.4",
     "@typescript-eslint/eslint-plugin": "3.6.1",
     "@typescript-eslint/parser": "3.6.1",
-    "@vendure-advanced-shipping/core": "2.1.1",
     "@vendure/core": "0.14.0",
     "@vendure/testing": "0.14.0",
     "commitlint": "9.1.0",
