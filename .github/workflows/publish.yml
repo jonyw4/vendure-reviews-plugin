@@ -31,7 +31,5 @@ jobs:
       run: |
         yarn install
         yarn build
-    - name: Test
-      run: yarn test
     - name: Deploy Package
       run: npx semantic-release
