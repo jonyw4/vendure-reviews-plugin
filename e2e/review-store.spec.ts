@@ -16,7 +16,8 @@ import {
 import {
   SHOP_CREATE_REVIEW_STORE,
   SHOP_MY_REVIEW_STORE,
-  SHOP_AVG_REVIEW_STORE
+  SHOP_AVG_REVIEW_STORE,
+  SHOP_UPDATE_REVIEW_STORE
 } from './graphql/shop-api.graphql';
 import {
   ReviewStoreQuery,
@@ -34,7 +35,9 @@ import {
   CreateReviewStoreMutationVariables,
   MyReviewStoreQuery,
   AvgReviewStoreQuery,
-  AvgReviewStoreQueryVariables
+  AvgReviewStoreQueryVariables,
+  UpdateReviewStoreMutation,
+  UpdateReviewStoreMutationVariables
 } from './graphql/shop-api.graphql.types';
 
 registerInitializer(
@@ -81,7 +84,7 @@ describe('Review Store E2E', () => {
       customerTestPassword
     );
 
-    expect(
+    await expect(
       shopClient.query<
         CreateReviewStoreMutation,
         CreateReviewStoreMutationVariables
@@ -99,7 +102,7 @@ describe('Review Store E2E', () => {
       customerTestPassword
     );
 
-    expect(
+    await expect(
       shopClient.query<
         CreateReviewStoreMutation,
         CreateReviewStoreMutationVariables
@@ -117,7 +120,7 @@ describe('Review Store E2E', () => {
   });
 
   it('should try to create a review with an customer that already have a review and throw error', async () => {
-    expect(
+    await expect(
       shopClient.query<
         CreateReviewStoreMutation,
         CreateReviewStoreMutationVariables
@@ -130,7 +133,7 @@ describe('Review Store E2E', () => {
   });
 
   it('should try to get the review of the current customer', async () => {
-    expect(
+    await expect(
       shopClient.query<MyReviewStoreQuery, MyReviewStoreQueryVariables>(
         SHOP_MY_REVIEW_STORE
       )
@@ -143,7 +146,7 @@ describe('Review Store E2E', () => {
   });
 
   it('should try to get the current review store avg in shop and returns 0', async () => {
-    expect(
+    await expect(
       shopClient.query<AvgReviewStoreQuery, AvgReviewStoreQueryVariables>(
         SHOP_AVG_REVIEW_STORE
       )
@@ -154,7 +157,7 @@ describe('Review Store E2E', () => {
 
   it('should get the list of reviews store in admin', async () => {
     await adminClient.asSuperAdmin();
-    expect(
+    await expect(
       adminClient.query<ListReviewStoreQuery, ListReviewStoreQueryVariables>(
         ADMIN_REVIEWS_STORE
       )
@@ -163,7 +166,7 @@ describe('Review Store E2E', () => {
         items: [
           {
             id: 'T_1',
-            nextStates: ['Authorized', 'Denied'],
+            nextStates: ['Authorized', 'Denied', 'Updated'],
             state: 'Created',
             ...exampleCreteReviewStore
           }
@@ -172,8 +175,8 @@ describe('Review Store E2E', () => {
     });
   });
 
-  it('should get the a review store in admin', () => {
-    expect(
+  it('should get the a review store in admin', async () => {
+    await expect(
       adminClient.query<ReviewStoreQuery, ReviewStoreQueryVariables>(
         ADMIN_REVIEW_STORE,
         {
@@ -183,15 +186,15 @@ describe('Review Store E2E', () => {
     ).resolves.toEqual({
       reviewStore: {
         id: 'T_1',
-        nextStates: ['Authorized', 'Denied'],
+        nextStates: ['Authorized', 'Denied', 'Updated'],
         state: 'Created',
         ...exampleCreteReviewStore
       }
     });
   });
 
-  it('should transit a review store to Authorized', () => {
-    expect(
+  it('should transit a review store to Authorized', async () => {
+    await expect(
       adminClient.query<
         TransitionReviewStoreToStateMutation,
         TransitionReviewStoreToStateMutationVariables
@@ -210,7 +213,7 @@ describe('Review Store E2E', () => {
   });
 
   it('should try to get the current review store avg in admin and returns 10', async () => {
-    expect(
+    await expect(
       adminClient.query<AvgReviewStoreQuery, AvgReviewStoreQueryVariables>(
         ADMIN_AVG_REVIEW_STORE
       )
@@ -220,12 +223,53 @@ describe('Review Store E2E', () => {
   });
 
   it('should try to get the current review store avg in shop and returns 10', async () => {
-    expect(
+    await expect(
       shopClient.query<AvgReviewStoreQuery, AvgReviewStoreQueryVariables>(
         SHOP_AVG_REVIEW_STORE
       )
     ).resolves.toEqual({
       avgReviewStore: 10
+    });
+  });
+
+  it('should try to update a review with an customer and succeeds', async () => {
+    await shopClient.asUserWithCredentials(
+      customers[1].emailAddress,
+      customerTestPassword
+    );
+
+    await expect(
+      shopClient.query<
+        UpdateReviewStoreMutation,
+        UpdateReviewStoreMutationVariables
+      >(SHOP_UPDATE_REVIEW_STORE, {
+        input: {
+          ...exampleCreteReviewStore
+        }
+      })
+    ).resolves.toEqual({
+      updateReviewStore: {
+        id: 'T_1',
+        ...exampleCreteReviewStore
+      }
+    });
+  });
+
+  it('should get the the review store in admin and should be Updated', async () => {
+    await expect(
+      adminClient.query<ReviewStoreQuery, ReviewStoreQueryVariables>(
+        ADMIN_REVIEW_STORE,
+        {
+          id: 'T_1'
+        }
+      )
+    ).resolves.toEqual({
+      reviewStore: {
+        id: 'T_1',
+        nextStates: ['Authorized', 'Denied'],
+        state: 'Updated',
+        ...exampleCreteReviewStore
+      }
     });
   });
 });

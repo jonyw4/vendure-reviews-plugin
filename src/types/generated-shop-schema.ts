@@ -1444,6 +1444,7 @@ export type Mutation = {
   /** Resets a Customer's password based on the provided token */
   resetPassword: LoginResult;
   createReviewStore?: Maybe<ReviewStore>;
+  updateReviewStore?: Maybe<ReviewStore>;
 };
 
 export type MutationAddItemToOrderArgs = {
@@ -1561,6 +1562,10 @@ export type MutationResetPasswordArgs = {
 
 export type MutationCreateReviewStoreArgs = {
   input: CreateReviewStoreInput;
+};
+
+export type MutationUpdateReviewStoreArgs = {
+  input?: Maybe<UpdateReviewStoreInput>;
 };
 
 export type NativeAuthInput = {
@@ -2379,6 +2384,12 @@ export type UpdateCustomerInput = {
 
 export type UpdateOrderInput = {
   customFields?: Maybe<Scalars['JSON']>;
+};
+
+export type UpdateReviewStoreInput = {
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  nps?: Maybe<Scalars['Int']>;
 };
 
 export type User = Node & {

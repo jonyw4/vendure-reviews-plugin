@@ -12,8 +12,14 @@ export const shopApiExtensions = gql`
     description: String!
     nps: Int!
   }
+  input UpdateReviewStoreInput {
+    title: String
+    description: String
+    nps: Int
+  }
   extend type Mutation {
     createReviewStore(input: CreateReviewStoreInput!): ReviewStore
+    updateReviewStore(input: UpdateReviewStoreInput): ReviewStore
   }
   extend type Query {
     "Get the average of review store"

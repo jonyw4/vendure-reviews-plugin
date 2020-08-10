@@ -38,28 +38,28 @@ describe('ReviewStoreAdminResolver', () => {
   });
 
   describe('reviewStore', () => {
-    it('should get a review properly', () => {
-      expect(resolver.reviewStore({ id: '1' })).resolves.toBe(
+    it('should get a review properly', async () => {
+      await expect(resolver.reviewStore({ id: '1' })).resolves.toBe(
         exampleReviewStore
       );
     });
   });
   describe('reviewStore', () => {
-    it('should get a review list properly', () => {
-      expect(resolver.reviewsStore({})).resolves.toEqual({
+    it('should get a review list properly', async () => {
+      await expect(resolver.reviewsStore({})).resolves.toEqual({
         items: examplesReviewStore,
         totalItems: 3
       });
     });
   });
   describe('avgReviewStore', () => {
-    it('should get the reviews NPS Average', () => {
-      expect(resolver.avgReviewStore()).resolves.toBe(9);
+    it('should get the reviews NPS Average', async () => {
+      await expect(resolver.avgReviewStore()).resolves.toBe(9);
     });
   });
   describe('transitionReviewStoreToState', () => {
-    it('should change state properly', () => {
-      expect(
+    it('should change state properly', async () => {
+      await expect(
         resolver.transitionReviewStoreToState(adminCtx, {
           id: '1',
           state: 'Created'
@@ -68,8 +68,8 @@ describe('ReviewStoreAdminResolver', () => {
     });
   });
   describe('nextStates', () => {
-    it('should get the next states', () => {
-      expect(resolver.nextStates(exampleReviewStore)).resolves.toEqual([
+    it('should get the next states', async () => {
+      await expect(resolver.nextStates(exampleReviewStore)).resolves.toEqual([
         'Created'
       ]);
     });

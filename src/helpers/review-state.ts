@@ -5,7 +5,7 @@ export type ReviewState = 'Created' | 'Updated' | 'Authorized' | 'Denied';
 
 export const reviewStateTransitions: Transitions<ReviewState> = {
   Created: {
-    to: ['Authorized', 'Denied']
+    to: ['Authorized', 'Denied', 'Updated']
   },
   Authorized: {
     to: ['Updated', 'Denied']

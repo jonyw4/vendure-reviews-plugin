@@ -48,9 +48,10 @@ export class ReviewStoreAdminResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: MutationTransitionReviewStoreToStateArgs
   ) {
+    const review = await this.reviewStoreService.findById(args.id);
     return this.reviewStoreService.transitionToState(
       ctx,
-      args.id,
+      review,
       args.state as ReviewState
     );
   }

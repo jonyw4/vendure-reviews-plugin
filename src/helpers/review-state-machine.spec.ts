@@ -22,7 +22,7 @@ describe('ReviewStateMachine', () => {
     ]);
   });
   it('should transit a Review Store Entity from authorized to created and throw a error', async () => {
-    expect(
+    await expect(
       reviewStateMachine.transition(adminCtx, reviewStore, 'Created')
     ).rejects.toThrow(IllegalOperationError);
   });

@@ -65,25 +65,24 @@ export class ReviewService<
     return await getEntityOrThrow(this.connection, this.entity, id);
   }
 
-  async update(input: DeepPartial<Et> & { id: ID }): Promise<Et> {
-    const review = await getEntityOrThrow(
-      this.connection,
-      this.entity,
-      input.id
-    );
+  async update(
+    ctx: RequestContext,
+    input: DeepPartial<Et> & { id: ID }
+  ): Promise<Et> {
+    const review = await this.findById(input.id);
     // @ts-ignore
-    return this.connection.getRepository(this.entity).save(
+    await this.connection.getRepository(this.entity).save(
       //@ts-ignore
       patchEntity(review, input)
     );
+    return this.transitionToState(ctx, review, 'Updated');
   }
 
   async transitionToState(
     ctx: RequestContext,
-    id: ID,
+    review: Et,
     state: ReviewState
   ): Promise<Et> {
-    const review = await this.findById(id);
     const fromState = review.state;
     await this.reviewStateMachine.transition(ctx, review, state);
     await this.connection

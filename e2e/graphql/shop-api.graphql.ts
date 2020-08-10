@@ -18,6 +18,15 @@ export const SHOP_CREATE_REVIEW_STORE = gql`
   ${SHOP_REVIEW_STORE_FRAGMENT}
 `;
 
+export const SHOP_UPDATE_REVIEW_STORE = gql`
+  mutation UpdateReviewStore($input: UpdateReviewStoreInput!) {
+    updateReviewStore(input: $input) {
+      ...ShopReviewStore
+    }
+  }
+  ${SHOP_REVIEW_STORE_FRAGMENT}
+`;
+
 export const SHOP_MY_REVIEW_STORE = gql`
   query MyReviewStore {
     myReviewStore {

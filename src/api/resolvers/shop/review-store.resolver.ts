@@ -8,7 +8,10 @@ import {
   IllegalOperationError
 } from '@vendure/core';
 import { ReviewStoreEntity } from '../../../entities/review-store.entity';
-import { MutationCreateReviewStoreArgs } from './../../../types/generated-shop-schema';
+import {
+  MutationCreateReviewStoreArgs,
+  MutationUpdateReviewStoreArgs
+} from './../../../types/generated-shop-schema';
 
 @Resolver('ReviewStore')
 export class ReviewStoreShopResolver {
@@ -28,6 +31,24 @@ export class ReviewStoreShopResolver {
       throw new IllegalOperationError('cannot-create-review-store');
     }
     return await this.reviewStoreService.create(args.input);
+  }
+
+  @Mutation()
+  @Allow(Permission.Owner)
+  async updateReviewStore(
+    @Ctx() ctx: RequestContext,
+    @Args() args: MutationUpdateReviewStoreArgs
+  ): Promise<ReviewStoreEntity> {
+    const customerReview = await this.reviewStoreService.findCustomerReview(
+      ctx
+    );
+    if (!customerReview) {
+      throw new IllegalOperationError('cannot-update-review-store');
+    }
+    return await this.reviewStoreService.update(ctx, {
+      ...args.input,
+      id: customerReview.id
+    });
   }
 
   @Query()

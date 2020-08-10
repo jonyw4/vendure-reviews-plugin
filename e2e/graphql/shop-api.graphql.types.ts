@@ -15,6 +15,16 @@ export type CreateReviewStoreMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export type UpdateReviewStoreMutationVariables = Types.Exact<{
+  input: Types.UpdateReviewStoreInput;
+}>;
+
+export type UpdateReviewStoreMutation = { __typename?: 'Mutation' } & {
+  updateReviewStore?: Types.Maybe<
+    { __typename?: 'ReviewStore' } & ShopReviewStoreFragment
+  >;
+};
+
 export type MyReviewStoreQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type MyReviewStoreQuery = { __typename?: 'Query' } & {
