@@ -48,7 +48,7 @@ describe('ReviewStoreShopResolver', () => {
         async () => true
       );
       expect(
-        resolver.createReviewStore(shopCtx, exampleReviewStore)
+        resolver.createReviewStore(shopCtx, { input: exampleReviewStore })
       ).resolves.toBe(exampleReviewStore);
     });
     it('should reject to create a review to store', () => {
@@ -56,7 +56,7 @@ describe('ReviewStoreShopResolver', () => {
         async () => false
       );
       expect(
-        resolver.createReviewStore(shopCtx, exampleReviewStore)
+        resolver.createReviewStore(shopCtx, { input: exampleReviewStore })
       ).rejects.toThrow(IllegalOperationError);
     });
   });

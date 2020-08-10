@@ -1,4 +1,11 @@
-import { Query, Mutation, Args, Resolver } from '@nestjs/graphql';
+import {
+  Query,
+  Mutation,
+  ResolveField,
+  Args,
+  Parent,
+  Resolver
+} from '@nestjs/graphql';
 import { ReviewStoreService } from '../../../services/review-store.service';
 import { Permission, Ctx, RequestContext, Allow } from '@vendure/core';
 import { ReviewState } from '../../../helpers';
@@ -7,10 +14,16 @@ import {
   QueryReviewStoreArgs,
   MutationTransitionReviewStoreToStateArgs
 } from '../../../types/generated-admin-schema';
+import { ReviewStoreEntity } from '../../../entities';
 
 @Resolver('ReviewStore')
 export class ReviewStoreAdminResolver {
   constructor(private reviewStoreService: ReviewStoreService) {}
+
+  @ResolveField('nextStates')
+  async nextStates(@Parent() reviewStore: ReviewStoreEntity) {
+    return this.reviewStoreService.getNextReviewStates(reviewStore);
+  }
 
   @Query()
   @Allow(Permission.ReadOrder)

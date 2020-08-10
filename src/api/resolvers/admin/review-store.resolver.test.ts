@@ -24,7 +24,8 @@ describe('ReviewStoreAdminResolver', () => {
               items: examplesReviewStore,
               totalItems: 3
             }),
-            transitionToState: async () => exampleReviewStore
+            transitionToState: async () => exampleReviewStore,
+            getNextReviewStates: () => ['Created']
           })
         }
       ]
@@ -38,12 +39,14 @@ describe('ReviewStoreAdminResolver', () => {
 
   describe('reviewStore', () => {
     it('should get a review properly', () => {
-      expect(resolver.reviewStore({ id: 1 })).resolves.toBe(exampleReviewStore);
+      expect(resolver.reviewStore({ id: '1' })).resolves.toBe(
+        exampleReviewStore
+      );
     });
   });
   describe('reviewStore', () => {
     it('should get a review list properly', () => {
-      expect(resolver.reviewsStore({})).resolves.toBe({
+      expect(resolver.reviewsStore({})).resolves.toEqual({
         items: examplesReviewStore,
         totalItems: 3
       });
@@ -58,10 +61,17 @@ describe('ReviewStoreAdminResolver', () => {
     it('should change state properly', () => {
       expect(
         resolver.transitionReviewStoreToState(adminCtx, {
-          id: 1,
+          id: '1',
           state: 'Created'
         })
       ).resolves.toBe(exampleReviewStore);
+    });
+  });
+  describe('nextStates', () => {
+    it('should get the next states', () => {
+      expect(resolver.nextStates(exampleReviewStore)).resolves.toEqual([
+        'Created'
+      ]);
     });
   });
 });

@@ -6,5 +6,10 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest'
   },
-  collectCoverageFrom: ['**/src/**', '!**/node_modules/**']
+  collectCoverageFrom: [
+    '**/src/**',
+    '!**/node_modules/**',
+    '!src/types/generated-admin-schema.ts',
+    '!src/types/generated-shop-schema.ts'
+  ]
 };
