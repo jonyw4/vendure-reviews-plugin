@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const ADMIN_REVIEW_STORE_FRAGMENT = gql`
-  fragment ReviewStoreTest on ReviewStore {
+  fragment AdminReviewStore on ReviewStore {
     id
     title
     description
@@ -11,10 +11,47 @@ export const ADMIN_REVIEW_STORE_FRAGMENT = gql`
   }
 `;
 
+export const ADMIN_CUSTOMER_LIST = gql`
+  query CustomerList {
+    customers(options: { take: 3 }) {
+      items {
+        id
+        emailAddress
+      }
+    }
+  }
+`;
+
 export const ADMIN_REVIEW_STORE = gql`
   query ReviewStore($id: ID!) {
     reviewStore(id: $id) {
-      ...ReviewStoreTest
+      ...AdminReviewStore
+    }
+  }
+  ${ADMIN_REVIEW_STORE_FRAGMENT}
+`;
+
+export const ADMIN_REVIEWS_STORE = gql`
+  query ListReviewStore {
+    reviewsStore {
+      items {
+        ...AdminReviewStore
+      }
+    }
+  }
+  ${ADMIN_REVIEW_STORE_FRAGMENT}
+`;
+
+export const ADMIN_AVG_REVIEW_STORE = gql`
+  query AvgReviewStore {
+    avgReviewStore
+  }
+`;
+
+export const ADMIN_TRANSITION_REVIEW_STORE = gql`
+  mutation transitionReviewStoreToState($id: ID!, $state: String!) {
+    transitionReviewStoreToState(id: $id, state: $state) {
+      ...AdminReviewStore
     }
   }
   ${ADMIN_REVIEW_STORE_FRAGMENT}

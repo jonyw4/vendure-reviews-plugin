@@ -1,6 +1,7 @@
 import { mergeConfig } from '@vendure/core';
 import { testConfig as defaultTestConfig } from '@vendure/testing';
 import path from 'path';
+import { E2EInjectOrderPlugin } from './inject-order';
 import { ReviewsStorePlugin } from '../../src';
 
 /**
@@ -26,5 +27,5 @@ export const testConfig = mergeConfig(defaultTestConfig, {
   importExportOptions: {
     importAssetsDir: path.join(__dirname, '..', 'fixtures/assets')
   },
-  plugins: [ReviewsStorePlugin]
+  plugins: [ReviewsStorePlugin, E2EInjectOrderPlugin]
 });

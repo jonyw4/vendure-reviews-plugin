@@ -52,11 +52,10 @@ export class ReviewStoreService extends ReviewService<
     const { nps } = await this.connection
       .getRepository(ReviewStoreEntity)
       .createQueryBuilder('review_store')
-      .select('TRUNCATE(AVG(nps), 1)', 'nps')
+      .select('AVG(nps)', 'nps')
       .where('state = :state', { state: 'Authorized' })
       .getRawOne();
-
-    return nps;
+    return nps ? nps : 0;
   }
 
   /**
@@ -85,8 +84,7 @@ export class ReviewStoreService extends ReviewService<
     const countOrders = await this.connection.getRepository(Order).count({
       where: {
         customer: customer,
-        active: false,
-        state: [Not('AddingItems'), Not('Cancelled'), Not('ArrangingPayment')]
+        active: false
       }
     });
 

@@ -2,7 +2,7 @@ import { VendureEntity, DeepPartial } from '@vendure/core';
 import { Column } from 'typeorm';
 import { ReviewState } from '../helpers/review-state';
 
-export class ReviewBaseEntity extends VendureEntity {
+export abstract class ReviewBaseEntity extends VendureEntity {
   constructor(input?: DeepPartial<ReviewBaseEntity>) {
     super(input);
   }

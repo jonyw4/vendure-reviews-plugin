@@ -147,7 +147,7 @@ describe('ReviewStoreService', () => {
         connection
           .getRepository(ReviewStoreEntity)
           .createQueryBuilder('review_store')
-          .select('TRUNCATE(AVG(nps), 1)', 'nps')
+          .select('AVG(nps)', 'nps')
           .where('state = :state', { state: 'Authorized' })
           .getRawOne.mockImplementation(async () => ({ nps: 10 }));
         expect(resolver.getNPSAvg()).resolves.toBe(10);

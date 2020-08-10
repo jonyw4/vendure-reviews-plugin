@@ -1,4 +1,3 @@
-import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import {
   RequestContext,
@@ -27,19 +26,15 @@ export class ReviewService<
   Et extends ReviewBaseEntity,
   Ev extends VendureEvent
 > {
-  entity: Type<Et>;
   reviewStateMachine: ReviewStateMachine<Et>;
-  event: Type<Ev>;
   constructor(
-    @InjectConnection() protected connection: Connection,
+    protected connection: Connection,
     protected listQueryBuilder: ListQueryBuilder,
     protected customerService: CustomerService,
     protected eventBus: EventBus,
-    entity: Type<Et>,
-    event: Type<Ev>
+    private entity: Type<Et>,
+    private event: Type<Ev>
   ) {
-    this.entity = entity;
-    this.event = event;
     this.reviewStateMachine = new ReviewStateMachine(entity);
   }
 
