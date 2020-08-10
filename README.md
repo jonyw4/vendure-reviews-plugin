@@ -1,6 +1,7 @@
 # Vendure Reviews Plugin
 ![Publish](https://github.com/jonyw4/vendure-reviews-plugin/workflows/Publish/badge.svg?branch=master)
 ![Build & Test](https://github.com/jonyw4/vendure-reviews-plugin/workflows/Build%20&%20Test/badge.svg)
+[![codecov](https://codecov.io/gh/jonyw4/vendure-reviews-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/jonyw4/vendure-reviews-plugin)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ⭐ Multiple plugins for [Vendure](https://github.com/vendure-ecommerce/vendure) to review about Products, Order and Company
@@ -36,7 +37,7 @@ const config: VendureConfig = {
 ```
 
 ## 📚 How to use?
-If you want to use queries and mutation of this package [you can see the all on this file](https://github.com/jonyw4/vendure-reviews-plugin/tree/src/api/schema)
+If you want to use queries and mutation of this package [you can see the all on this file](https://github.com/jonyw4/vendure-reviews-plugin/blob/master/src/api/schema/shop.ts)
 
 ## ❗️ License
 MIT 
