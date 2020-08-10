@@ -8,6 +8,24 @@ generates:
     schema: "http://localhost:3000/shop-api"
     plugins:
       - typescript
+  ./e2e/graphql/shop-api.graphql.ts:
+    schema: "http://localhost:3000/shop-api"
+    documents: "./e2e/graphql/shop-api.graphql.ts"
+    preset: near-operation-file
+    presetConfig:
+      extension: .types.ts
+      baseTypesPath: "../../../src/types/generated-shop-schema.ts"
+    plugins:
+      - typescript-operations
+  ./e2e/graphql/admin-api.graphql.ts:
+    schema: "http://localhost:3000/admin-api"
+    documents: "./e2e/graphql/admin-api.graphql.ts"
+    preset: near-operation-file
+    presetConfig:
+      extension: .types.ts
+      baseTypesPath: "../../../src/types/generated-admin-schema.ts"
+    plugins:
+      - typescript-operations
 hooks:
   afterAllFileWrite:
     - npx eslint --fix

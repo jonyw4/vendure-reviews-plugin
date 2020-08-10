@@ -752,6 +752,14 @@
   resolved "https://registry.yarnpkg.com/@golevelup/nestjs-testing/-/nestjs-testing-0.1.2.tgz#314e87e634d581797d086c9f5f45dce802ad919a"
   integrity sha512-7TOpI6E86GBE93DJoCqavOfycAMPjnZDfcpdBrm/aWUoR/oDxHjhTr1R8NGVY4+iHY5wDwEXG7mcDkDEWQznfQ==
 
+"@graphql-codegen/add@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/add/-/add-2.0.0.tgz#e0d97855f4dadb9fa3a79904bf206ed84c3bf48b"
+  integrity sha512-MUzoVZALQ8LFUZ60cE0lvXRFJfiFsbeUr9KLj6gx4SuFbkm6//wIDbQ1gT5B6WbMaJSOzq1CbOqQ3lt8SSsyUQ==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^1.17.7"
+    tslib "~2.0.0"
+
 "@graphql-codegen/cli@^1.17.7":
   version "1.17.7"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-1.17.7.tgz#4ba45106403a3aca36585bf04f0169fda38ac9df"
@@ -811,7 +819,18 @@
     "@graphql-tools/utils" "^6.0.0"
     tslib "~2.0.0"
 
-"@graphql-codegen/plugin-helpers@1.17.7":
+"@graphql-codegen/near-operation-file-preset@^1.17.8":
+  version "1.17.8"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/near-operation-file-preset/-/near-operation-file-preset-1.17.8.tgz#8ea08ef370cf97011d3ae13f70e5f910f3e1e093"
+  integrity sha512-RCYfEhoxHJugyizxXY4cChsiPptOsIwR3cfPo57Whhxn66bUWm5oKcgQv5w1AER3JyUe7LtvnpkH6CjP3VvLKA==
+  dependencies:
+    "@graphql-codegen/add" "^2.0.0"
+    "@graphql-codegen/plugin-helpers" "^1.17.7"
+    "@graphql-codegen/visitor-plugin-common" "^1.17.12"
+    parse-filepath "^1.0.2"
+    tslib "~2.0.0"
+
+"@graphql-codegen/plugin-helpers@1.17.7", "@graphql-codegen/plugin-helpers@^1.17.7":
   version "1.17.7"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-1.17.7.tgz#5903105fda9470aafefe9da29e3a6fb3a52b8376"
   integrity sha512-LsXS0s/ZOACZXa3W29ekcaQLzP8TsYzow6nIjW6rtkWX5T0EDooBQbDn1cdLdlpenqbUU+vtONwR6Qqc6hrq2Q==
@@ -827,6 +846,17 @@
     pascal-case "3.1.1"
     tslib "~2.0.0"
     upper-case "2.0.1"
+
+"@graphql-codegen/typescript-operations@^1.17.7":
+  version "1.17.7"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-1.17.7.tgz#28bfca6bf47549971ce79fea9cecaa8727515271"
+  integrity sha512-gmY3YC0xoF8waPJKOB35xLsfqs2gG7fQiGmZ9sOJ3ck8hME0osgdNVXpKSX6GYMmbhb2nrdbynG+77JwGpxXfg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "1.17.7"
+    "@graphql-codegen/typescript" "1.17.7"
+    "@graphql-codegen/visitor-plugin-common" "1.17.7"
+    auto-bind "~4.0.0"
+    tslib "~2.0.0"
 
 "@graphql-codegen/typescript@1.17.7":
   version "1.17.7"
@@ -851,6 +881,21 @@
     graphql-tag "2.11.0"
     parse-filepath "1.0.2"
     pascal-case "3.1.1"
+    tslib "~2.0.0"
+
+"@graphql-codegen/visitor-plugin-common@^1.17.12":
+  version "1.17.12"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.17.12.tgz#d4bc677ea9b01c91a86519ebdeda293c97216838"
+  integrity sha512-ti06eEaNL1lz0ZAG4CxLeQYiTbzTjxVt4n3I7uyoX67rqfvRcXcEY9fXssaN6FJviSn+5zvLiNMIZsUwJk8k6g==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^1.17.7"
+    "@graphql-tools/relay-operation-optimizer" "6.0.15"
+    array.prototype.flatmap "^1.2.3"
+    auto-bind "~4.0.0"
+    dependency-graph "^0.9.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    pascal-case "^3.1.1"
     tslib "~2.0.0"
 
 "@graphql-toolkit/common@0.9.0":
@@ -2707,7 +2752,7 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-array.prototype.flatmap@1.2.3:
+array.prototype.flatmap@1.2.3, array.prototype.flatmap@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/array.prototype.flatmap/-/array.prototype.flatmap-1.2.3.tgz#1c13f84a178566042dd63de4414440db9222e443"
   integrity sha512-OOEk+lkePcg+ODXIpvuU9PAryCikCJyo7GlDG1upleEpQRx6mzL9puEBkozQ5iAx20KV0l3DbyQwqciJtqe5Pg==
@@ -4137,7 +4182,7 @@ depd@~2.0.0:
   resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
   integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
 
-dependency-graph@0.9.0:
+dependency-graph@0.9.0, dependency-graph@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/dependency-graph/-/dependency-graph-0.9.0.tgz#11aed7e203bc8b00f48356d92db27b265c445318"
   integrity sha512-9YLIBURXj4DJMFALxXw9K3Y3rwb5Fk0X5/8ipCzaN84+gKxoHK43tVKRNakCQbiEx07E8Uwhuq21BpUagFhZ8w==
@@ -5448,7 +5493,7 @@ graphql-subscriptions@^1.0.0:
   dependencies:
     iterall "^1.2.1"
 
-graphql-tag@2.11.0, graphql-tag@^2.10.0, graphql-tag@^2.10.1, graphql-tag@^2.9.2:
+graphql-tag@2.11.0, graphql-tag@^2.10.0, graphql-tag@^2.10.1, graphql-tag@^2.11.0, graphql-tag@^2.9.2:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.11.0.tgz#1deb53a01c46a7eb401d6cb59dec86fa1cccbffd"
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
@@ -8905,7 +8950,7 @@ parent-require@^1.0.0:
   resolved "https://registry.yarnpkg.com/parent-require/-/parent-require-1.0.0.tgz#746a167638083a860b0eef6732cb27ed46c32977"
   integrity sha1-dGoWdjgIOoYLDu9nMssn7UbDKXc=
 
-parse-filepath@1.0.2:
+parse-filepath@1.0.2, parse-filepath@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/parse-filepath/-/parse-filepath-1.0.2.tgz#a632127f53aaf3d15876f5872f3ffac763d6c891"
   integrity sha1-pjISf1Oq89FYdvWHLz/6x2PWyJE=

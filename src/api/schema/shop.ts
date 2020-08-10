@@ -5,6 +5,7 @@ export const shopApiExtensions = gql`
     id: ID!
     title: String!
     description: String!
+    nps: Int!
   }
   input CreateReviewStoreInput {
     title: String!

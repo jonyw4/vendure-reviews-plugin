@@ -6,6 +6,7 @@ export const adminApiExtensions = gql`
     title: String!
     description: String!
     state: String!
+    nps: Int!
     nextStates: [String!]!
   }
   type ReviewStoreList implements PaginatedList {

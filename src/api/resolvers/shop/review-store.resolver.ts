@@ -25,9 +25,7 @@ export class ReviewStoreShopResolver {
         ctx
       ))
     ) {
-      throw new IllegalOperationError(
-        'review.error.cannot-transition-review-store-from-to'
-      );
+      throw new IllegalOperationError('cannot-create-review-store');
     }
     return await this.reviewStoreService.create(args.input);
   }

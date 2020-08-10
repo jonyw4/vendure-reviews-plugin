@@ -3131,6 +3131,7 @@ export type ReviewStore = Node & {
   title: Scalars['String'];
   description: Scalars['String'];
   state: Scalars['String'];
+  nps: Scalars['Int'];
   nextStates: Array<Scalars['String']>;
 };
 
@@ -3138,6 +3139,7 @@ export type ReviewStoreFilterParameter = {
   title?: Maybe<StringOperators>;
   description?: Maybe<StringOperators>;
   state?: Maybe<StringOperators>;
+  nps?: Maybe<NumberOperators>;
 };
 
 export type ReviewStoreList = PaginatedList & {
@@ -3158,6 +3160,7 @@ export type ReviewStoreSortParameter = {
   title?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
   state?: Maybe<SortOrder>;
+  nps?: Maybe<SortOrder>;
 };
 
 export type Role = Node & {

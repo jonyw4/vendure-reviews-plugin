@@ -2127,6 +2127,7 @@ export type ReviewStore = Node & {
   id: Scalars['ID'];
   title: Scalars['String'];
   description: Scalars['String'];
+  nps: Scalars['Int'];
 };
 
 export type Role = Node & {

@@ -1,3 +1,4 @@
 node_modules
 lib
 coverage
+e2e/__data__
