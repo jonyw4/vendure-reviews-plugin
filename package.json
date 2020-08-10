@@ -6,7 +6,7 @@
   "files": [
     "lib"
   ],
-  "repository": "git@github.com:jonyw4/vendure-webmaniabr-plugin.git",
+  "repository": "git@github.com:jonyw4/vendure-reviews-plugin.git",
   "author": "Jonathan Célio <jonathan.clio@hotmail.com>",
   "license": "MIT",
   "publishConfig": {
@@ -18,6 +18,7 @@
     "lint": "eslint --ext .ts,.tsx",
     "lint:fix": "eslint --ext .ts,.tsx --fix",
     "test": "rimraf e2e/__data__ && jest --collectCoverage",
+    "test:ci": "npm run test && codecov",
     "codegen": "graphql-codegen --config gql-codegen.yml",
     "dev-server:populate": "node -r ts-node/register dev-server/populate.ts",
     "dev-server:start": "rimraf dev-server/admin-ui && concurrently npm:dev-server:run*",
@@ -42,6 +43,7 @@
     "@vendure/core": "0.14.0",
     "@vendure/create": "0.14.0",
     "@vendure/testing": "0.14.0",
+    "codecov": "^3.7.2",
     "commitlint": "9.1.0",
     "concurrently": "5.3.0",
     "eslint": "7.4.0",
