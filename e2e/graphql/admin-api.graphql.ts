@@ -8,6 +8,10 @@ export const ADMIN_REVIEW_STORE_FRAGMENT = gql`
     state
     nps
     nextStates
+    customer {
+      id
+      firstName
+    }
   }
 `;
 

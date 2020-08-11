@@ -3133,6 +3133,7 @@ export type ReviewStore = Node & {
   state: Scalars['String'];
   nps: Scalars['Int'];
   nextStates: Array<Scalars['String']>;
+  customer?: Maybe<Customer>;
 };
 
 export type ReviewStoreFilterParameter = {

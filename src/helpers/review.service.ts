@@ -10,7 +10,8 @@ import {
   CustomerService,
   VendureEvent,
   DeepPartial,
-  patchEntity
+  patchEntity,
+  UnauthorizedError
 } from '@vendure/core';
 import { ReviewState } from './review-state';
 import { ListQueryOptions } from '@vendure/core/dist/common/types/common-types';
@@ -33,7 +34,8 @@ export class ReviewService<
     protected customerService: CustomerService,
     protected eventBus: EventBus,
     private entity: Type<Et>,
-    private event: Type<Ev>
+    private event: Type<Ev>,
+    private entityRelations: string[]
   ) {
     this.reviewStateMachine = new ReviewStateMachine(entity);
   }
@@ -51,7 +53,7 @@ export class ReviewService<
     totalItems: number;
   }> {
     return await this.listQueryBuilder
-      .build(this.entity, options)
+      .build(this.entity, options, { relations: this.entityRelations })
       .getManyAndCount()
       .then(([reviews, totalItems]) => {
         return {
@@ -62,7 +64,9 @@ export class ReviewService<
   }
 
   async findById(id: ID): Promise<Et> {
-    return await getEntityOrThrow(this.connection, this.entity, id);
+    return await getEntityOrThrow(this.connection, this.entity, id, {
+      relations: this.entityRelations
+    });
   }
 
   async update(
@@ -97,10 +101,7 @@ export class ReviewService<
     return this.reviewStateMachine.getNextStates(review);
   }
 
-  /** Get Customer in the context of the request */
-  protected async getCustomer(
-    ctx: RequestContext
-  ): Promise<Customer | undefined> {
+  async getCustomer(ctx: RequestContext): Promise<Customer | undefined> {
     const userId = ctx.activeUserId;
     if (!userId) {
       return;
@@ -112,6 +113,13 @@ export class ReviewService<
       return;
     }
 
+    return customer;
+  }
+  async getCustomerOrThrow(ctx: RequestContext): Promise<Customer> {
+    const customer = await this.getCustomer(ctx);
+    if (!customer) {
+      throw new UnauthorizedError();
+    }
     return customer;
   }
 }

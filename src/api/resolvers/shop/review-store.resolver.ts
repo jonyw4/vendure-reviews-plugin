@@ -5,7 +5,9 @@ import {
   Ctx,
   RequestContext,
   Allow,
-  IllegalOperationError
+  IllegalOperationError,
+  UnauthorizedError,
+  Customer
 } from '@vendure/core';
 import { ReviewStoreEntity } from '../../../entities/review-store.entity';
 import {
@@ -23,14 +25,18 @@ export class ReviewStoreShopResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: MutationCreateReviewStoreArgs
   ): Promise<ReviewStoreEntity> {
+    const customer = await this.reviewStoreService.getCustomerOrThrow(ctx);
     if (
       !(await this.reviewStoreService.checkIfCustomerIsValidToCreateReviewStore(
-        ctx
+        customer
       ))
     ) {
       throw new IllegalOperationError('cannot-create-review-store');
     }
-    return await this.reviewStoreService.create(args.input);
+    return await this.reviewStoreService.create({
+      ...args.input,
+      customer: customer
+    });
   }
 
   @Mutation()
@@ -39,8 +45,9 @@ export class ReviewStoreShopResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: MutationUpdateReviewStoreArgs
   ): Promise<ReviewStoreEntity> {
+    const customer = await this.reviewStoreService.getCustomerOrThrow(ctx);
     const customerReview = await this.reviewStoreService.findCustomerReview(
-      ctx
+      customer
     );
     if (!customerReview) {
       throw new IllegalOperationError('cannot-update-review-store');
@@ -61,6 +68,7 @@ export class ReviewStoreShopResolver {
   async myReviewStore(
     @Ctx() ctx: RequestContext
   ): Promise<ReviewStoreEntity | undefined> {
-    return await this.reviewStoreService.findCustomerReview(ctx);
+    const customer = await this.reviewStoreService.getCustomerOrThrow(ctx);
+    return await this.reviewStoreService.findCustomerReview(customer);
   }
 }

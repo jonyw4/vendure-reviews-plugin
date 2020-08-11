@@ -3,7 +3,11 @@ import * as Types from '../../src/types/generated-admin-schema';
 export type AdminReviewStoreFragment = { __typename?: 'ReviewStore' } & Pick<
   Types.ReviewStore,
   'id' | 'title' | 'description' | 'state' | 'nps' | 'nextStates'
->;
+> & {
+    customer?: Types.Maybe<
+      { __typename?: 'Customer' } & Pick<Types.Customer, 'id' | 'firstName'>
+    >;
+  };
 
 export type CustomerListQueryVariables = Types.Exact<{ [key: string]: never }>;
 

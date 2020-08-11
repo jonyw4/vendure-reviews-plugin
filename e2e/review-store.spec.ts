@@ -168,6 +168,10 @@ describe('Review Store E2E', () => {
             id: 'T_1',
             nextStates: ['Authorized', 'Denied', 'Updated'],
             state: 'Created',
+            customer: {
+              id: 'T_2',
+              firstName: 'Trevor'
+            },
             ...exampleCreteReviewStore
           }
         ]
@@ -188,6 +192,10 @@ describe('Review Store E2E', () => {
         id: 'T_1',
         nextStates: ['Authorized', 'Denied', 'Updated'],
         state: 'Created',
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         ...exampleCreteReviewStore
       }
     });
@@ -207,6 +215,10 @@ describe('Review Store E2E', () => {
         id: 'T_1',
         state: 'Authorized',
         nextStates: ['Updated', 'Denied'],
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         ...exampleCreteReviewStore
       }
     });
@@ -266,6 +278,10 @@ describe('Review Store E2E', () => {
     ).resolves.toEqual({
       reviewStore: {
         id: 'T_1',
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',
         ...exampleCreteReviewStore

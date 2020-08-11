@@ -1,5 +1,5 @@
 import { Customer } from '@vendure/core';
-import { Column, OneToOne, Entity } from 'typeorm';
+import { Column, OneToOne, Entity, JoinColumn } from 'typeorm';
 import { ReviewBaseEntity } from './review-base.entity';
 import { DeepPartial } from '@vendure/core';
 
@@ -11,6 +11,7 @@ export class ReviewStoreEntity extends ReviewBaseEntity {
   @Column('int')
   nps: number;
 
-  @OneToOne((type) => Customer)
+  @OneToOne(() => Customer)
+  @JoinColumn()
   customer: Customer;
 }

@@ -27,3 +27,10 @@ export const shopCtx = new RequestContext({
   channel: chanel,
   languageCode: LanguageCode.en
 });
+export const failCtx = new RequestContext({
+  apiType: 'shop',
+  isAuthorized: false,
+  authorizedAsOwnerOnly: false,
+  channel: chanel,
+  languageCode: LanguageCode.en
+});

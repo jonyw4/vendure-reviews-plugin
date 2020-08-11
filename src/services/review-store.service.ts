@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
-import { Connection, Not } from 'typeorm';
+import { Connection } from 'typeorm';
 import { ReviewStoreEntity } from '../entities';
 import {
-  RequestContext,
   EventBus,
   Order,
-  UnauthorizedError,
   CustomerService,
-  ListQueryBuilder
+  ListQueryBuilder,
+  Customer
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
 import { ReviewStoreStateTransitionEvent } from '../events';
@@ -30,19 +29,14 @@ export class ReviewStoreService extends ReviewService<
       customerService,
       eventBus,
       ReviewStoreEntity,
-      ReviewStoreStateTransitionEvent
+      ReviewStoreStateTransitionEvent,
+      ['customer']
     );
   }
 
   async findCustomerReview(
-    ctx: RequestContext
+    customer: Customer
   ): Promise<ReviewStoreEntity | undefined> {
-    const customer = await this.getCustomer(ctx);
-
-    if (!customer) {
-      throw new UnauthorizedError();
-    }
-
     return await this.connection
       .getRepository(ReviewStoreEntity)
       .findOne({ customer: customer });
@@ -58,24 +52,10 @@ export class ReviewStoreService extends ReviewService<
     return nps ? nps : 0;
   }
 
-  /**
-   * To create a review store the user must:
-   *
-   * - Be Logged
-   * - Have an account
-   * - Doesn't have an store review saved previously
-   * - Have at least one order placed
-   */
   async checkIfCustomerIsValidToCreateReviewStore(
-    ctx: RequestContext
+    customer: Customer
   ): Promise<boolean> {
-    const customer = await this.getCustomer(ctx);
-
-    if (!customer) {
-      return false;
-    }
-
-    const customerReview = await this.findCustomerReview(ctx);
+    const customerReview = await this.findCustomerReview(customer);
 
     if (customerReview) {
       return false;

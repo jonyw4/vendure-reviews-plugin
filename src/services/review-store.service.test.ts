@@ -14,7 +14,8 @@ import {
   exampleReviewStore,
   exampleCustomer,
   adminCtx,
-  shopCtx
+  shopCtx,
+  failCtx
 } from '../test-helpers';
 import { ReviewStoreEntity } from '../entities/review-store.entity';
 import { ReviewStoreService } from './review-store.service';
@@ -113,35 +114,56 @@ describe('ReviewStoreService', () => {
         ]);
       });
     });
+    describe('getCustomer', () => {
+      it('should try to get an customer by the ctx and succeeds', async () => {
+        customerService.findOneByUserId.mockImplementation(
+          async () => exampleCustomer
+        );
+        await expect(resolver.getCustomer(shopCtx)).resolves.toEqual(
+          exampleCustomer
+        );
+      });
+      it('should try to get an customer by the ctx and fail', async () => {
+        customerService.findOneByUserId.mockImplementation(
+          async () => undefined
+        );
+        await expect(resolver.getCustomer(shopCtx)).resolves.toEqual(undefined);
+      });
+      it('should try to get an customer by an unauthorized ctx and fail', async () => {
+        customerService.findOneByUserId.mockImplementation(
+          async () => undefined
+        );
+        await expect(resolver.getCustomer(failCtx)).resolves.toEqual(undefined);
+      });
+    });
+    describe('getCustomerOrThrow', () => {
+      it('should try to get an customer by the ctx and succeeds', async () => {
+        customerService.findOneByUserId.mockImplementation(
+          async () => exampleCustomer
+        );
+        await expect(resolver.getCustomerOrThrow(shopCtx)).resolves.toEqual(
+          exampleCustomer
+        );
+      });
+      it('should try to get an customer by the ctx and fail', async () => {
+        customerService.findOneByUserId.mockImplementation(
+          async () => undefined
+        );
+        await expect(resolver.getCustomerOrThrow(shopCtx)).rejects.toThrow(
+          UnauthorizedError
+        );
+      });
+    });
   });
   describe('ReviewStoreService', () => {
     describe('findCustomerReview', () => {
       it('should find the review', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => exampleCustomer
-        );
         connection
           .getRepository(ReviewStoreEntity)
           .findOne.mockImplementation(async () => exampleReviewStore);
-        await expect(resolver.findCustomerReview(shopCtx)).resolves.toBe(
-          exampleReviewStore
-        );
-      });
-      it('should test a an undefined user and return an unauthorized error ', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => undefined
-        );
-        await expect(resolver.findCustomerReview(adminCtx)).rejects.toThrow(
-          UnauthorizedError
-        );
-      });
-      it('should test an empty user and  return an unauthorized error', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => undefined
-        );
-        await expect(resolver.findCustomerReview(shopCtx)).rejects.toThrow(
-          UnauthorizedError
-        );
+        await expect(
+          resolver.findCustomerReview(exampleCustomer)
+        ).resolves.toBe(exampleReviewStore);
       });
     });
     describe('getNPSAvg', () => {
@@ -156,7 +178,24 @@ describe('ReviewStoreService', () => {
       });
     });
     describe('checkIfCustomerIsValidToCreateReviewStore', () => {
-      it('should return true', async () => {
+      it('should test an customer with a review and return false', async () => {
+        connection
+          .getRepository(ReviewStoreEntity)
+          .findOne.mockImplementation(async () => exampleReviewStore);
+        await expect(
+          resolver.checkIfCustomerIsValidToCreateReviewStore(exampleCustomer)
+        ).resolves.toBe(false);
+      });
+      it('should test an customer without review and orders and return false', async () => {
+        connection
+          .getRepository(ReviewStoreEntity)
+          .findOne.mockImplementation(async () => undefined);
+        connection.getRepository(Order).count.mockImplementation(async () => 0);
+        await expect(
+          resolver.checkIfCustomerIsValidToCreateReviewStore(exampleCustomer)
+        ).resolves.toBe(false);
+      });
+      it('should test an customer without review and with valid order and return true', async () => {
         customerService.findOneByUserId.mockImplementation(
           async () => exampleCustomer
         );
@@ -165,50 +204,8 @@ describe('ReviewStoreService', () => {
           .findOne.mockImplementation(async () => undefined);
         connection.getRepository(Order).count.mockImplementation(async () => 1);
         await expect(
-          resolver.checkIfCustomerIsValidToCreateReviewStore(shopCtx)
+          resolver.checkIfCustomerIsValidToCreateReviewStore(exampleCustomer)
         ).resolves.toBe(true);
-      });
-
-      it('should test a an undefined user and return false', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => undefined
-        );
-        await expect(
-          resolver.checkIfCustomerIsValidToCreateReviewStore(adminCtx)
-        ).resolves.toBe(false);
-      });
-      it('should test an empty user and return false', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => undefined
-        );
-        await expect(
-          resolver.checkIfCustomerIsValidToCreateReviewStore(shopCtx)
-        ).resolves.toBe(false);
-      });
-
-      it('should test an customer with review and return false', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => exampleCustomer
-        );
-        connection
-          .getRepository(ReviewStoreEntity)
-          .findOne.mockImplementation(async () => exampleReviewStore);
-        await expect(
-          resolver.checkIfCustomerIsValidToCreateReviewStore(shopCtx)
-        ).resolves.toBe(false);
-      });
-
-      it('should test an customer without orders and return false', async () => {
-        customerService.findOneByUserId.mockImplementation(
-          async () => exampleCustomer
-        );
-        connection
-          .getRepository(ReviewStoreEntity)
-          .findOne.mockImplementation(async () => undefined);
-        connection.getRepository(Order).count.mockImplementation(async () => 0);
-        await expect(
-          resolver.checkIfCustomerIsValidToCreateReviewStore(shopCtx)
-        ).resolves.toBe(false);
       });
     });
   });
