@@ -324,6 +324,13 @@ export type CreateCustomerInput = {
   customFields?: Maybe<Scalars['JSON']>;
 };
 
+export type CreateReviewProductInput = {
+  productId: Scalars['ID'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  stars: Scalars['Int'];
+};
+
 export type CreateReviewStoreInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -1445,6 +1452,8 @@ export type Mutation = {
   resetPassword: LoginResult;
   createReviewStore?: Maybe<ReviewStore>;
   updateReviewStore?: Maybe<ReviewStore>;
+  createReviewProduct?: Maybe<ReviewProduct>;
+  updateReviewProduct?: Maybe<ReviewProduct>;
 };
 
 export type MutationAddItemToOrderArgs = {
@@ -1566,6 +1575,14 @@ export type MutationCreateReviewStoreArgs = {
 
 export type MutationUpdateReviewStoreArgs = {
   input?: Maybe<UpdateReviewStoreInput>;
+};
+
+export type MutationCreateReviewProductArgs = {
+  input: CreateReviewProductInput;
+};
+
+export type MutationUpdateReviewProductArgs = {
+  input: UpdateReviewProductInput;
 };
 
 export type NativeAuthInput = {
@@ -1830,7 +1847,14 @@ export type Product = Node & {
   facetValues: Array<FacetValue>;
   translations: Array<ProductTranslation>;
   collections: Array<Collection>;
+  reviewAvg: Scalars['Int'];
+  reviews: ReviewProductList;
+  canReview?: Maybe<Scalars['Boolean']>;
   customFields?: Maybe<Scalars['JSON']>;
+};
+
+export type ProductReviewsArgs = {
+  options?: Maybe<ReviewProductListOptions>;
 };
 
 export type ProductFilterParameter = {
@@ -1840,6 +1864,8 @@ export type ProductFilterParameter = {
   name?: Maybe<StringOperators>;
   slug?: Maybe<StringOperators>;
   description?: Maybe<StringOperators>;
+  reviewAvg?: Maybe<NumberOperators>;
+  canReview?: Maybe<BooleanOperators>;
 };
 
 export type ProductList = PaginatedList & {
@@ -1907,6 +1933,7 @@ export type ProductSortParameter = {
   name?: Maybe<SortOrder>;
   slug?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
+  reviewAvg?: Maybe<SortOrder>;
 };
 
 export type ProductTranslation = {
@@ -2056,6 +2083,8 @@ export type Query = {
   avgReviewStore?: Maybe<Scalars['Int']>;
   /** Get the review store of the current customer */
   myReviewStore?: Maybe<ReviewStore>;
+  /** Get the list of reviews store */
+  reviewsStore: ReviewStoreList;
 };
 
 export type QueryCollectionsArgs = {
@@ -2086,6 +2115,10 @@ export type QueryProductsArgs = {
 
 export type QuerySearchArgs = {
   input: SearchInput;
+};
+
+export type QueryReviewsStoreArgs = {
+  options?: Maybe<ReviewStoreListOptions>;
 };
 
 export type Refund = Node & {
@@ -2127,12 +2160,72 @@ export type Return = Node &
     orderItem: OrderItem;
   };
 
+export type ReviewProduct = Node & {
+  __typename?: 'ReviewProduct';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  stars: Scalars['Int'];
+};
+
+export type ReviewProductFilterParameter = {
+  title?: Maybe<StringOperators>;
+  description?: Maybe<StringOperators>;
+  stars?: Maybe<NumberOperators>;
+};
+
+export type ReviewProductList = PaginatedList & {
+  __typename?: 'ReviewProductList';
+  items: Array<ReviewProduct>;
+  totalItems: Scalars['Int'];
+};
+
+export type ReviewProductListOptions = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  sort?: Maybe<ReviewProductSortParameter>;
+  filter?: Maybe<ReviewProductFilterParameter>;
+};
+
+export type ReviewProductSortParameter = {
+  id?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  stars?: Maybe<SortOrder>;
+};
+
 export type ReviewStore = Node & {
   __typename?: 'ReviewStore';
   id: Scalars['ID'];
   title: Scalars['String'];
   description: Scalars['String'];
   nps: Scalars['Int'];
+};
+
+export type ReviewStoreFilterParameter = {
+  title?: Maybe<StringOperators>;
+  description?: Maybe<StringOperators>;
+  nps?: Maybe<NumberOperators>;
+};
+
+export type ReviewStoreList = PaginatedList & {
+  __typename?: 'ReviewStoreList';
+  items: Array<ReviewStore>;
+  totalItems: Scalars['Int'];
+};
+
+export type ReviewStoreListOptions = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  sort?: Maybe<ReviewStoreSortParameter>;
+  filter?: Maybe<ReviewStoreFilterParameter>;
+};
+
+export type ReviewStoreSortParameter = {
+  id?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  nps?: Maybe<SortOrder>;
 };
 
 export type Role = Node & {
@@ -2384,6 +2477,13 @@ export type UpdateCustomerInput = {
 
 export type UpdateOrderInput = {
   customFields?: Maybe<Scalars['JSON']>;
+};
+
+export type UpdateReviewProductInput = {
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  stars?: Maybe<Scalars['Int']>;
 };
 
 export type UpdateReviewStoreInput = {

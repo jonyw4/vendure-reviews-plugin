@@ -5,9 +5,7 @@ import {
   Ctx,
   RequestContext,
   Allow,
-  IllegalOperationError,
-  UnauthorizedError,
-  Customer
+  IllegalOperationError
 } from '@vendure/core';
 import { ReviewStoreEntity } from '../../../entities/review-store.entity';
 import {
@@ -70,5 +68,12 @@ export class ReviewStoreShopResolver {
   ): Promise<ReviewStoreEntity | undefined> {
     const customer = await this.reviewStoreService.getCustomerOrThrow(ctx);
     return await this.reviewStoreService.findCustomerReview(customer);
+  }
+
+  @Query()
+  async reviewsStore(@Args() { options }: any) {
+    return this.reviewStoreService.findAll(options || undefined, {
+      where: { state: 'Authorized' }
+    });
   }
 }

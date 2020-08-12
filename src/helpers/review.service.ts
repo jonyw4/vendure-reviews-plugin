@@ -8,11 +8,13 @@ import {
   getEntityOrThrow,
   Customer,
   CustomerService,
-  VendureEvent,
   DeepPartial,
   patchEntity,
-  UnauthorizedError
+  UnauthorizedError,
+  ExtendedListQueryOptions
 } from '@vendure/core';
+import { FindOneOptions } from 'typeorm';
+import { ReviewStateTransitionEvent } from '../events/review-state-transition.event';
 import { ReviewState } from './review-state';
 import { ListQueryOptions } from '@vendure/core/dist/common/types/common-types';
 import { ReviewBaseEntity } from '../entities/review-base.entity';
@@ -25,7 +27,7 @@ import { ReviewStateMachine } from './review-state-machine';
  */
 export class ReviewService<
   Et extends ReviewBaseEntity,
-  Ev extends VendureEvent
+  Ev extends ReviewStateTransitionEvent<Et>
 > {
   reviewStateMachine: ReviewStateMachine<Et>;
   constructor(
@@ -47,13 +49,17 @@ export class ReviewService<
   }
 
   async findAll(
-    options?: ListQueryOptions<Et>
+    options?: ListQueryOptions<Et>,
+    extendedOptions?: ExtendedListQueryOptions<Et>
   ): Promise<{
     items: Et[];
     totalItems: number;
   }> {
     return await this.listQueryBuilder
-      .build(this.entity, options, { relations: this.entityRelations })
+      .build(this.entity, options, {
+        ...extendedOptions,
+        relations: this.entityRelations
+      })
       .getManyAndCount()
       .then(([reviews, totalItems]) => {
         return {
@@ -63,8 +69,9 @@ export class ReviewService<
       });
   }
 
-  async findById(id: ID): Promise<Et> {
+  async findById(id: ID, options?: FindOneOptions<Et>): Promise<Et> {
     return await getEntityOrThrow(this.connection, this.entity, id, {
+      ...options,
       relations: this.entityRelations
     });
   }

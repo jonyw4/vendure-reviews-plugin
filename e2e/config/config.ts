@@ -2,7 +2,7 @@ import { mergeConfig } from '@vendure/core';
 import { testConfig as defaultTestConfig } from '@vendure/testing';
 import path from 'path';
 import { E2EInjectOrderPlugin } from './inject-order';
-import { ReviewsStorePlugin } from '../../src';
+import { ReviewsStorePlugin, ReviewsProductPlugin } from '../../src';
 
 /**
  * We use a relatively long timeout on the initial beforeAll() function of the
@@ -27,5 +27,5 @@ export const testConfig = mergeConfig(defaultTestConfig, {
   importExportOptions: {
     importAssetsDir: path.join(__dirname, '..', 'fixtures/assets')
   },
-  plugins: [ReviewsStorePlugin, E2EInjectOrderPlugin]
+  plugins: [ReviewsStorePlugin, ReviewsProductPlugin, E2EInjectOrderPlugin]
 });

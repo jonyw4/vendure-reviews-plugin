@@ -44,7 +44,7 @@ describe('ReviewStoreAdminResolver', () => {
       );
     });
   });
-  describe('reviewStore', () => {
+  describe('reviewsStore', () => {
     it('should get a review list properly', async () => {
       await expect(resolver.reviewsStore({})).resolves.toEqual({
         items: examplesReviewStore,

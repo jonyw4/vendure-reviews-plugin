@@ -5,18 +5,21 @@ import {
   ReviewStoreAdminResolver,
   ReviewStoreShopResolver
 } from '../api/resolvers';
-import { adminApiExtensions, shopApiExtensions } from '../api/schema';
+import {
+  reviewStoreAdminApiExtension,
+  reviewStoreShopApiExtension
+} from '../api/schemas';
 
 @VendurePlugin({
   imports: [PluginCommonModule],
   entities: [ReviewStoreEntity],
   providers: [ReviewStoreService],
   adminApiExtensions: {
-    schema: adminApiExtensions,
+    schema: reviewStoreAdminApiExtension,
     resolvers: [ReviewStoreAdminResolver]
   },
   shopApiExtensions: {
-    schema: shopApiExtensions,
+    schema: reviewStoreShopApiExtension,
     resolvers: [ReviewStoreShopResolver]
   }
 })

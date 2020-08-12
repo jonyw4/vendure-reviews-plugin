@@ -16,7 +16,11 @@ describe('ReviewStoreShopResolver', () => {
   const reviewStoreService = createMock<ReviewStoreService>({
     getNPSAvg: async () => 9,
     findCustomerReview: async () => exampleReviewStore,
-    create: async () => exampleReviewStore
+    create: async () => exampleReviewStore,
+    findAll: async () => ({
+      items: examplesReviewStore,
+      totalItems: 3
+    })
   });
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,6 +42,14 @@ describe('ReviewStoreShopResolver', () => {
   describe('avgReviewStore', () => {
     it('should get the NPS Average', async () => {
       await expect(resolver.avgReviewStore()).resolves.toBe(9);
+    });
+  });
+  describe('reviewsStore', () => {
+    it('should get a review list properly', async () => {
+      await expect(resolver.reviewsStore({})).resolves.toEqual({
+        items: examplesReviewStore,
+        totalItems: 3
+      });
     });
   });
 
