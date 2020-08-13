@@ -3,7 +3,12 @@ import * as Types from '../../src/types/generated-admin-schema';
 export type AdminReviewStoreFragment = { __typename?: 'ReviewStore' } & Pick<
   Types.ReviewStore,
   'id' | 'title' | 'description' | 'state' | 'nps' | 'nextStates'
->;
+> & {
+    customer: { __typename?: 'Customer' } & Pick<
+      Types.Customer,
+      'id' | 'firstName'
+    >;
+  };
 
 export type CustomerListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
@@ -54,5 +59,51 @@ export type TransitionReviewStoreToStateMutation = {
 } & {
   transitionReviewStoreToState?: Types.Maybe<
     { __typename?: 'ReviewStore' } & AdminReviewStoreFragment
+  >;
+};
+
+export type AdminReviewProductFragment = {
+  __typename?: 'ReviewProduct';
+} & Pick<
+  Types.ReviewProduct,
+  'id' | 'title' | 'description' | 'state' | 'stars' | 'nextStates'
+> & {
+    customer: { __typename?: 'Customer' } & Pick<
+      Types.Customer,
+      'id' | 'firstName'
+    >;
+    product: { __typename?: 'Product' } & Pick<Types.Product, 'id' | 'name'>;
+  };
+
+export type ReviewProductQueryVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+}>;
+
+export type ReviewProductQuery = { __typename?: 'Query' } & {
+  reviewProduct?: Types.Maybe<
+    { __typename?: 'ReviewProduct' } & AdminReviewProductFragment
+  >;
+};
+
+export type ListReviewProductQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
+
+export type ListReviewProductQuery = { __typename?: 'Query' } & {
+  reviewsProduct: { __typename?: 'ReviewProductList' } & {
+    items: Array<{ __typename?: 'ReviewProduct' } & AdminReviewProductFragment>;
+  };
+};
+
+export type TransitionReviewProductToStateMutationVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+  state: Types.Scalars['String'];
+}>;
+
+export type TransitionReviewProductToStateMutation = {
+  __typename?: 'Mutation';
+} & {
+  transitionReviewProductToState?: Types.Maybe<
+    { __typename?: 'ReviewProduct' } & AdminReviewProductFragment
   >;
 };

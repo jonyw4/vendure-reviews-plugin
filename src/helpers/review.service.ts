@@ -8,10 +8,13 @@ import {
   getEntityOrThrow,
   Customer,
   CustomerService,
-  VendureEvent,
   DeepPartial,
-  patchEntity
+  patchEntity,
+  UnauthorizedError,
+  ExtendedListQueryOptions
 } from '@vendure/core';
+import { FindOneOptions } from 'typeorm';
+import { ReviewStateTransitionEvent } from '../events/review-state-transition.event';
 import { ReviewState } from './review-state';
 import { ListQueryOptions } from '@vendure/core/dist/common/types/common-types';
 import { ReviewBaseEntity } from '../entities/review-base.entity';
@@ -24,7 +27,7 @@ import { ReviewStateMachine } from './review-state-machine';
  */
 export class ReviewService<
   Et extends ReviewBaseEntity,
-  Ev extends VendureEvent
+  Ev extends ReviewStateTransitionEvent<Et>
 > {
   reviewStateMachine: ReviewStateMachine<Et>;
   constructor(
@@ -33,7 +36,8 @@ export class ReviewService<
     protected customerService: CustomerService,
     protected eventBus: EventBus,
     private entity: Type<Et>,
-    private event: Type<Ev>
+    private event: Type<Ev>,
+    private entityRelations: string[]
   ) {
     this.reviewStateMachine = new ReviewStateMachine(entity);
   }
@@ -45,13 +49,17 @@ export class ReviewService<
   }
 
   async findAll(
-    options?: ListQueryOptions<Et>
+    options?: ListQueryOptions<Et>,
+    extendedOptions?: ExtendedListQueryOptions<Et>
   ): Promise<{
     items: Et[];
     totalItems: number;
   }> {
     return await this.listQueryBuilder
-      .build(this.entity, options)
+      .build(this.entity, options, {
+        ...extendedOptions,
+        relations: this.entityRelations
+      })
       .getManyAndCount()
       .then(([reviews, totalItems]) => {
         return {
@@ -61,8 +69,11 @@ export class ReviewService<
       });
   }
 
-  async findById(id: ID): Promise<Et> {
-    return await getEntityOrThrow(this.connection, this.entity, id);
+  async findById(id: ID, options?: FindOneOptions<Et>): Promise<Et> {
+    return await getEntityOrThrow(this.connection, this.entity, id, {
+      ...options,
+      relations: this.entityRelations
+    });
   }
 
   async update(
@@ -97,10 +108,7 @@ export class ReviewService<
     return this.reviewStateMachine.getNextStates(review);
   }
 
-  /** Get Customer in the context of the request */
-  protected async getCustomer(
-    ctx: RequestContext
-  ): Promise<Customer | undefined> {
+  async getCustomer(ctx: RequestContext): Promise<Customer | undefined> {
     const userId = ctx.activeUserId;
     if (!userId) {
       return;
@@ -112,6 +120,13 @@ export class ReviewService<
       return;
     }
 
+    return customer;
+  }
+  async getCustomerOrThrow(ctx: RequestContext): Promise<Customer> {
+    const customer = await this.getCustomer(ctx);
+    if (!customer) {
+      throw new UnauthorizedError();
+    }
     return customer;
   }
 }

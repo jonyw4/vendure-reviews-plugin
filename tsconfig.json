@@ -19,7 +19,8 @@
     "removeComments": true,
     "sourceMap": true,
     "outDir": "./lib",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": "./"
   },
   "files": [
     "./src/index.ts"

@@ -5,7 +5,8 @@ import { IllegalOperationError } from '@vendure/core';
 import {
   shopCtx,
   exampleReviewStore,
-  examplesReviewStore
+  examplesReviewStore,
+  exampleCustomer
 } from '../../../test-helpers';
 import { createMock } from '@golevelup/nestjs-testing';
 
@@ -15,7 +16,11 @@ describe('ReviewStoreShopResolver', () => {
   const reviewStoreService = createMock<ReviewStoreService>({
     getNPSAvg: async () => 9,
     findCustomerReview: async () => exampleReviewStore,
-    create: async () => exampleReviewStore
+    create: async () => exampleReviewStore,
+    findAll: async () => ({
+      items: examplesReviewStore,
+      totalItems: 3
+    })
   });
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,14 +39,25 @@ describe('ReviewStoreShopResolver', () => {
     await expect(resolver).toBeDefined();
   });
 
-  describe('getNPSAvg', () => {
+  describe('avgReviewStore', () => {
     it('should get the NPS Average', async () => {
       await expect(resolver.avgReviewStore()).resolves.toBe(9);
+    });
+  });
+  describe('reviewsStore', () => {
+    it('should get a review list properly', async () => {
+      await expect(resolver.reviewsStore({})).resolves.toEqual({
+        items: examplesReviewStore,
+        totalItems: 3
+      });
     });
   });
 
   describe('myReviewStore', () => {
     it('should return my review for store', async () => {
+      reviewStoreService.getCustomerOrThrow.mockImplementation(
+        async () => exampleCustomer
+      );
       await expect(resolver.myReviewStore(shopCtx)).resolves.toBe(
         exampleReviewStore
       );
@@ -50,6 +66,9 @@ describe('ReviewStoreShopResolver', () => {
 
   describe('createReviewStore', () => {
     it('should create a review to store correctly', async () => {
+      reviewStoreService.getCustomerOrThrow.mockImplementation(
+        async () => exampleCustomer
+      );
       reviewStoreService.checkIfCustomerIsValidToCreateReviewStore.mockImplementation(
         async () => true
       );
@@ -57,7 +76,10 @@ describe('ReviewStoreShopResolver', () => {
         resolver.createReviewStore(shopCtx, { input: exampleReviewStore })
       ).resolves.toBe(exampleReviewStore);
     });
-    it('should reject to create a review to store', async () => {
+    it('should try to create a review of an invalid user', async () => {
+      reviewStoreService.getCustomerOrThrow.mockImplementation(
+        async () => exampleCustomer
+      );
       reviewStoreService.checkIfCustomerIsValidToCreateReviewStore.mockImplementation(
         async () => false
       );
@@ -68,6 +90,9 @@ describe('ReviewStoreShopResolver', () => {
   });
   describe('updateReviewStore', () => {
     it('should update a review store correctly', async () => {
+      reviewStoreService.getCustomerOrThrow.mockImplementation(
+        async () => exampleCustomer
+      );
       reviewStoreService.findCustomerReview.mockImplementation(
         async () => exampleReviewStore
       );
@@ -78,7 +103,10 @@ describe('ReviewStoreShopResolver', () => {
         resolver.updateReviewStore(shopCtx, { input: examplesReviewStore[1] })
       ).resolves.toEqual(examplesReviewStore[1]);
     });
-    it('should try to update a undefined customer review store and fail', async () => {
+    it('should try to update a undefined review store and fail', async () => {
+      reviewStoreService.getCustomerOrThrow.mockImplementation(
+        async () => exampleCustomer
+      );
       reviewStoreService.findCustomerReview.mockImplementation(
         async () => undefined
       );

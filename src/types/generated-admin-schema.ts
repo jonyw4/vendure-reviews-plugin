@@ -1937,6 +1937,7 @@ export type Mutation = {
   /** Remove members from a Zone */
   removeMembersFromZone: Zone;
   transitionReviewStoreToState?: Maybe<ReviewStore>;
+  transitionReviewProductToState?: Maybe<ReviewProduct>;
 };
 
 export type MutationCreateAdministratorArgs = {
@@ -2310,6 +2311,11 @@ export type MutationRemoveMembersFromZoneArgs = {
 };
 
 export type MutationTransitionReviewStoreToStateArgs = {
+  id: Scalars['ID'];
+  state: Scalars['String'];
+};
+
+export type MutationTransitionReviewProductToStateArgs = {
   id: Scalars['ID'];
   state: Scalars['String'];
 };
@@ -2914,6 +2920,10 @@ export type Query = {
   reviewStore?: Maybe<ReviewStore>;
   /** Get the list of reviews store */
   reviewsStore: ReviewStoreList;
+  /** Get the review product */
+  reviewProduct?: Maybe<ReviewProduct>;
+  /** Get the list of reviews product */
+  reviewsProduct: ReviewProductList;
 };
 
 export type QueryAdministratorsArgs = {
@@ -3082,6 +3092,14 @@ export type QueryReviewsStoreArgs = {
   options?: Maybe<ReviewStoreListOptions>;
 };
 
+export type QueryReviewProductArgs = {
+  id: Scalars['ID'];
+};
+
+export type QueryReviewsProductArgs = {
+  options?: Maybe<ReviewProductListOptions>;
+};
+
 export type Refund = Node & {
   __typename?: 'Refund';
   id: Scalars['ID'];
@@ -3125,6 +3143,46 @@ export type Return = Node &
     orderItem: OrderItem;
   };
 
+export type ReviewProduct = Node & {
+  __typename?: 'ReviewProduct';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  state: Scalars['String'];
+  stars: Scalars['Int'];
+  nextStates: Array<Scalars['String']>;
+  customer: Customer;
+  product: Product;
+};
+
+export type ReviewProductFilterParameter = {
+  title?: Maybe<StringOperators>;
+  description?: Maybe<StringOperators>;
+  state?: Maybe<StringOperators>;
+  stars?: Maybe<NumberOperators>;
+};
+
+export type ReviewProductList = PaginatedList & {
+  __typename?: 'ReviewProductList';
+  items: Array<ReviewProduct>;
+  totalItems: Scalars['Int'];
+};
+
+export type ReviewProductListOptions = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  sort?: Maybe<ReviewProductSortParameter>;
+  filter?: Maybe<ReviewProductFilterParameter>;
+};
+
+export type ReviewProductSortParameter = {
+  id?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  state?: Maybe<SortOrder>;
+  stars?: Maybe<SortOrder>;
+};
+
 export type ReviewStore = Node & {
   __typename?: 'ReviewStore';
   id: Scalars['ID'];
@@ -3133,6 +3191,7 @@ export type ReviewStore = Node & {
   state: Scalars['String'];
   nps: Scalars['Int'];
   nextStates: Array<Scalars['String']>;
+  customer: Customer;
 };
 
 export type ReviewStoreFilterParameter = {

@@ -4,7 +4,7 @@ import {
   DefaultSearchPlugin,
   VendureConfig
 } from '@vendure/core';
-import { ReviewsStorePlugin } from '../src';
+import { ReviewsStorePlugin, ReviewsProductPlugin } from '../src';
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -45,7 +45,12 @@ export const config: VendureConfig = {
   paymentOptions: {
     paymentMethodHandlers: [examplePaymentHandler]
   },
-  plugins: [DefaultJobQueuePlugin, DefaultSearchPlugin, ReviewsStorePlugin]
+  plugins: [
+    DefaultJobQueuePlugin,
+    DefaultSearchPlugin,
+    ReviewsStorePlugin,
+    ReviewsProductPlugin
+  ]
 };
 
 export default config;

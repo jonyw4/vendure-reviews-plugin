@@ -17,7 +17,8 @@ import {
   SHOP_CREATE_REVIEW_STORE,
   SHOP_MY_REVIEW_STORE,
   SHOP_AVG_REVIEW_STORE,
-  SHOP_UPDATE_REVIEW_STORE
+  SHOP_UPDATE_REVIEW_STORE,
+  SHOP_REVIEWS_STORE
 } from './graphql/shop-api.graphql';
 import {
   ReviewStoreQuery,
@@ -37,7 +38,9 @@ import {
   AvgReviewStoreQuery,
   AvgReviewStoreQueryVariables,
   UpdateReviewStoreMutation,
-  UpdateReviewStoreMutationVariables
+  UpdateReviewStoreMutationVariables,
+  ListReviewStoreQueryVariables as ShopListReviewStoreQueryVariables,
+  ListReviewStoreQuery as ShopListReviewStoreQuery
 } from './graphql/shop-api.graphql.types';
 
 registerInitializer(
@@ -96,7 +99,7 @@ describe('Review Store E2E', () => {
     ).rejects.toThrow('cannot-create-review-store');
   });
 
-  it('should try to create a review with an customer with a valid and succeeds', async () => {
+  it('should try to create a review with an valid customer and succeeds', async () => {
     await shopClient.asUserWithCredentials(
       customers[1].emailAddress,
       customerTestPassword
@@ -168,6 +171,10 @@ describe('Review Store E2E', () => {
             id: 'T_1',
             nextStates: ['Authorized', 'Denied', 'Updated'],
             state: 'Created',
+            customer: {
+              id: 'T_2',
+              firstName: 'Trevor'
+            },
             ...exampleCreteReviewStore
           }
         ]
@@ -188,6 +195,10 @@ describe('Review Store E2E', () => {
         id: 'T_1',
         nextStates: ['Authorized', 'Denied', 'Updated'],
         state: 'Created',
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         ...exampleCreteReviewStore
       }
     });
@@ -207,7 +218,29 @@ describe('Review Store E2E', () => {
         id: 'T_1',
         state: 'Authorized',
         nextStates: ['Updated', 'Denied'],
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         ...exampleCreteReviewStore
+      }
+    });
+  });
+
+  it('should get the the list of review store in shop', async () => {
+    await expect(
+      shopClient.query<
+        ShopListReviewStoreQuery,
+        ShopListReviewStoreQueryVariables
+      >(SHOP_REVIEWS_STORE)
+    ).resolves.toEqual({
+      reviewsStore: {
+        items: [
+          {
+            id: 'T_1',
+            ...exampleCreteReviewStore
+          }
+        ]
       }
     });
   });
@@ -266,6 +299,10 @@ describe('Review Store E2E', () => {
     ).resolves.toEqual({
       reviewStore: {
         id: 'T_1',
+        customer: {
+          id: 'T_2',
+          firstName: 'Trevor'
+        },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',
         ...exampleCreteReviewStore

@@ -17,13 +17,16 @@
     "build": "rimraf lib && tsc",
     "lint": "eslint --ext .ts,.tsx",
     "lint:fix": "eslint --ext .ts,.tsx --fix",
-    "test": "rimraf e2e/__data__ && jest --collectCoverage",
+    "test": "rimraf e2e/__data__ && jest --collectCoverage --runInBand",
     "test:ci": "npm run test && codecov",
     "codegen": "graphql-codegen --config gql-codegen.yml",
     "dev-server:populate": "node -r ts-node/register dev-server/populate.ts",
     "dev-server:start": "rimraf dev-server/admin-ui && concurrently npm:dev-server:run*",
     "dev-server:run:server": "node -r ts-node/register dev-server/index.ts",
     "dev-server:run:worker": "node -r ts-node/register dev-server/index-worker.ts"
+  },
+  "dependencies": {
+    "@vendure/ui-devkit": "0.14.0"
   },
   "peerDependencies": {
     "@vendure/core": ">=0.14.0"

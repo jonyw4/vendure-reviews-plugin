@@ -1,4 +1,4 @@
-import { ReviewStoreStateTransitionEvent } from './review-store-transition.event';
+import { ReviewStoreStateTransitionEvent } from './review-store-state-transition.event';
 import { adminCtx, exampleReviewStore } from '../test-helpers';
 
 describe('ReviewStoreStateTransitionEvent', () => {
@@ -13,7 +13,7 @@ describe('ReviewStoreStateTransitionEvent', () => {
     expect(event).toBeTruthy();
     expect(event.fromState).toBe('Created');
     expect(event.toState).toBe('Authorized');
-    expect(event.reviewStore).toEqual(exampleReviewStore);
+    expect(event.review).toEqual(exampleReviewStore);
     expect(event.ctx).toEqual(adminCtx);
   });
 });

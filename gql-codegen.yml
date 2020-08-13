@@ -8,6 +8,19 @@ generates:
     schema: "http://localhost:3000/shop-api"
     plugins:
       - typescript
+  # ./src/ui/common/generated-admin-schema.ts:
+  #   schema: "http://localhost:3000/admin-api"
+  #   plugins:
+  #     - typescript
+  # ./src/ui:
+  #   schema: "http://localhost:3000/admin-api"
+  #   documents: "./**/*.graphql.ts"
+  #   preset: near-operation-file
+  #   presetConfig:
+  #     extension: .types.ts
+  #     baseTypesPath: "common/generated-admin-schema.ts"
+  #   plugins:
+  #     - typescript-operations
   ./e2e/graphql/shop-api.graphql.ts:
     schema: "http://localhost:3000/shop-api"
     documents: "./e2e/graphql/shop-api.graphql.ts"
