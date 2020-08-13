@@ -17,7 +17,7 @@
     "build": "rimraf lib && tsc",
     "lint": "eslint --ext .ts,.tsx",
     "lint:fix": "eslint --ext .ts,.tsx --fix",
-    "test": "rimraf e2e/__data__ && jest --collectCoverage",
+    "test": "rimraf e2e/__data__ && jest --collectCoverage --runInBand",
     "test:ci": "npm run test && codecov",
     "codegen": "graphql-codegen --config gql-codegen.yml",
     "dev-server:populate": "node -r ts-node/register dev-server/populate.ts",
