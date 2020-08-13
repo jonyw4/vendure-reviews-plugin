@@ -72,7 +72,14 @@ describe('ReviewProductService', () => {
         .count.mockImplementationOnce(async () => 0);
       connection
         .getRepository(OrderLine)
-        .count.mockImplementationOnce(async () => 1);
+        // @ts-ignore
+        .createQueryBuilder.mockImplementation(() => ({
+          select: jest.fn().mockReturnThis(),
+          leftJoin: jest.fn().mockReturnThis(),
+          andWhere: jest.fn().mockReturnThis(),
+          getCount: jest.fn().mockImplementationOnce(async () => 1)
+        }));
+
       await expect(
         resolver.checkIfCustomerIsValidToCreateReviewProduct(
           exampleCustomer,
@@ -82,9 +89,6 @@ describe('ReviewProductService', () => {
     });
 
     it('should try to check if customer is valid to create review product in a product that he already reviewed and fail', async () => {
-      connection
-        .getRepository(Product)
-        .findOneOrFail.mockImplementation(async () => exampleProduct);
       connection
         .getRepository(ReviewProductEntity)
         .count.mockImplementationOnce(async () => 1);
@@ -98,14 +102,18 @@ describe('ReviewProductService', () => {
 
     it("should try to check if customer is valid to create review product in a product that he didn't bought and fail", async () => {
       connection
-        .getRepository(Product)
-        .findOneOrFail.mockImplementation(async () => exampleProduct);
-      connection
         .getRepository(ReviewProductEntity)
         .count.mockImplementationOnce(async () => 0);
       connection
         .getRepository(OrderLine)
-        .count.mockImplementationOnce(async () => 0);
+        // @ts-ignore
+        .createQueryBuilder.mockImplementation(() => ({
+          select: jest.fn().mockReturnThis(),
+          leftJoin: jest.fn().mockReturnThis(),
+          andWhere: jest.fn().mockReturnThis(),
+          getCount: jest.fn().mockImplementationOnce(async () => 0)
+        }));
+
       await expect(
         resolver.checkIfCustomerIsValidToCreateReviewProduct(
           exampleCustomer,
@@ -119,21 +127,29 @@ describe('ReviewProductService', () => {
     it('should get available products to review', async () => {
       connection
         .getRepository(ReviewProductEntity)
-        .find.mockImplementationOnce(async () => []);
-      listQueryBuilder
-        .build(OrderLine, {}, {})
-        .select('productVariant')
-        .distinct(true)
-        .getMany.mockImplementationOnce(async () => [
-          new OrderLine({ productVariant: { productId: '1' } }),
-          new OrderLine({ productVariant: { productId: '2' } })
-        ]);
-      listQueryBuilder
-        .build(Product, {}, {})
-        .getManyAndCount.mockImplementationOnce(async () => [
-          examplesReviewProduct,
-          3
-        ]);
+        // @ts-ignore
+        .createQueryBuilder.mockImplementation(() => ({
+          select: jest.fn().mockReturnThis(),
+          where: jest.fn().mockReturnThis(),
+          getQuery: jest.fn().mockImplementation(() => ''),
+          distinct: jest.fn().mockReturnThis(),
+          setParameters: jest.fn().mockReturnThis(),
+          getParameters: jest.fn().mockReturnThis(),
+          leftJoin: jest.fn().mockReturnThis(),
+          andWhere: jest.fn().mockReturnThis(),
+          getRawMany: jest
+            .fn()
+            .mockImplementationOnce(async () => [
+              { productId: '1' },
+              { productId: '2' }
+            ])
+        }));
+      // @ts-ignore
+      listQueryBuilder.build.mockImplementationOnce(() => ({
+        getManyAndCount: jest
+          .fn()
+          .mockImplementationOnce(async () => [examplesReviewProduct, 3])
+      }));
       await expect(
         resolver.availableProductsToReview(shopCtx, exampleCustomer, {})
       ).resolves.toEqual({ items: examplesReviewProduct, totalItems: 3 });

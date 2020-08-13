@@ -1,7 +1,7 @@
 import { ReviewProductShopResolver } from './review-product.resolver';
 import { TestingModule, Test } from '@nestjs/testing';
 import { ReviewProductService } from '../../../services/review-product.service';
-import { IllegalOperationError } from '@vendure/core';
+import { IllegalOperationError, ProductService } from '@vendure/core';
 import {
   shopCtx,
   exampleReviewProduct,
@@ -28,6 +28,13 @@ describe('ReviewProductShopResolver', () => {
         {
           provide: ReviewProductService,
           useValue: reviewProductService
+        },
+        {
+          provide: ProductService,
+          useValue: createMock<ProductService>({
+            // @ts-ignore
+            findOne: async () => exampleProduct
+          })
         }
       ]
     }).compile();
@@ -50,7 +57,10 @@ describe('ReviewProductShopResolver', () => {
         async () => true
       );
       await expect(
-        resolver.createReviewProduct(shopCtx, { input: exampleReviewProduct })
+        resolver.createReviewProduct(shopCtx, {
+          // @ts-ignore
+          input: exampleReviewProduct
+        })
       ).resolves.toBe(exampleReviewProduct);
     });
     it('should try to create a review of an invalid user', async () => {
@@ -64,7 +74,10 @@ describe('ReviewProductShopResolver', () => {
         async () => false
       );
       await expect(
-        resolver.createReviewProduct(shopCtx, { input: exampleReviewProduct })
+        resolver.createReviewProduct(shopCtx, {
+          // @ts-ignore
+          input: exampleReviewProduct
+        })
       ).rejects.toThrow(IllegalOperationError);
     });
   });
@@ -81,9 +94,17 @@ describe('ReviewProductShopResolver', () => {
       );
       await expect(
         resolver.updateReviewProduct(shopCtx, {
+          // @ts-ignore
           input: examplesReviewProduct[1]
         })
       ).resolves.toEqual(examplesReviewProduct[1]);
+    });
+  });
+  describe('product', () => {
+    it('should get the product', async () => {
+      await expect(
+        resolver.product(shopCtx, exampleReviewProduct)
+      ).resolves.toEqual(exampleProduct);
     });
   });
 });

@@ -4,9 +4,12 @@ import { ReviewProductService } from '../../../services/review-product.service';
 import {
   exampleReviewProduct,
   examplesReviewProduct,
-  adminCtx
+  adminCtx,
+  shopCtx,
+  exampleProduct
 } from '../../../test-helpers';
 import { createMock } from '@golevelup/nestjs-testing';
+import { ProductService } from '@vendure/core';
 
 describe('ReviewProductAdminResolver', () => {
   let resolver: ReviewProductAdminResolver;
@@ -25,6 +28,13 @@ describe('ReviewProductAdminResolver', () => {
             }),
             transitionToState: async () => exampleReviewProduct,
             getNextReviewStates: () => ['Created']
+          })
+        },
+        {
+          provide: ProductService,
+          useValue: createMock<ProductService>({
+            // @ts-ignore
+            findOne: async () => exampleProduct
           })
         }
       ]
@@ -68,6 +78,14 @@ describe('ReviewProductAdminResolver', () => {
       await expect(resolver.nextStates(exampleReviewProduct)).resolves.toEqual([
         'Created'
       ]);
+    });
+  });
+
+  describe('product', () => {
+    it('should get the product', async () => {
+      await expect(
+        resolver.product(shopCtx, exampleReviewProduct)
+      ).resolves.toEqual(exampleProduct);
     });
   });
 });

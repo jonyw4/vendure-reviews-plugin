@@ -35,7 +35,7 @@ export class ReviewProductService extends ReviewService<
       eventBus,
       ReviewProductEntity,
       ReviewProductStateTransitionEvent,
-      ['customer']
+      ['customer', 'product']
     );
   }
 
@@ -65,6 +65,7 @@ export class ReviewProductService extends ReviewService<
           product: product
         }
       });
+
     if (countReviewProduct > 0) {
       return false;
     }
@@ -76,8 +77,10 @@ export class ReviewProductService extends ReviewService<
       .leftJoin('order_line.order', 'order')
       .leftJoin('order_line.productVariant', 'productVariant')
       .andWhere('order.active = false')
-      .andWhere('productVariant.productId = :id', { id: product.id })
-      .where('order.customer = :id', { id: customer.id })
+      .andWhere('productVariant.productId = :productId', {
+        productId: product.id
+      })
+      .andWhere('order.customer = :customerId', { customerId: customer.id })
       .getCount();
 
     return countProductBoughtByCustomer > 0;
@@ -93,7 +96,7 @@ export class ReviewProductService extends ReviewService<
       .getRepository(ReviewProductEntity)
       .createQueryBuilder('review_product')
       .select('review_product.productId', 'productId')
-      .where('customerId = :id', { id: customer.id });
+      .where('customerId = :customerId', { customerId: customer.id });
 
     // Now we get all products to review based on the products that the user bought and didn't review
     const availableProductsToReview = await this.connection
@@ -103,7 +106,7 @@ export class ReviewProductService extends ReviewService<
       .select('productVariant.productId', 'productId')
       .leftJoin('order_line.order', 'order')
       .leftJoin('order_line.productVariant', 'productVariant')
-      .andWhere('order.customer = :id', { id: customer.id })
+      .andWhere('order.customer = :customerId', { customerId: customer.id })
       .andWhere('order.active = false')
       .andWhere(
         `productVariant.productId NOT IN (${customerReviewQb.getQuery()})`

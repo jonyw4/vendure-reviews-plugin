@@ -193,10 +193,15 @@ describe('Review Product E2E', () => {
     });
   });
 
-  it('should try to get the a reviews of the current user', async () => {
+  it('should try to get an review of the current user', async () => {
     await expect(
       shopClient.query<any, any>(SHOP_REVIEW_PRODUCT, { id: 'T_1' })
-    ).resolves.toEqual({});
+    ).resolves.toEqual({
+      reviewProduct: {
+        id: 'T_1',
+        ...exampleCreteReviewProduct
+      }
+    });
   });
 
   it('should get the list of reviews product in admin', async () => {
@@ -216,6 +221,10 @@ describe('Review Product E2E', () => {
             customer: {
               id: 'T_2',
               firstName: 'Trevor'
+            },
+            product: {
+              id: 'T_1',
+              name: 'Laptop'
             },
             ...exampleCreteReviewProduct
           }
@@ -241,6 +250,10 @@ describe('Review Product E2E', () => {
           id: 'T_2',
           firstName: 'Trevor'
         },
+        product: {
+          id: 'T_1',
+          name: 'Laptop'
+        },
         ...exampleCreteReviewProduct
       }
     });
@@ -264,6 +277,10 @@ describe('Review Product E2E', () => {
           id: 'T_2',
           firstName: 'Trevor'
         },
+        product: {
+          id: 'T_1',
+          name: 'Laptop'
+        },
         ...exampleCreteReviewProduct
       }
     });
@@ -276,6 +293,9 @@ describe('Review Product E2E', () => {
       )
     ).resolves.toEqual({
       product: {
+        id: 'T_1',
+        canReview: false,
+        reviewAvg: 5,
         reviews: {
           items: [
             {
@@ -326,6 +346,10 @@ describe('Review Product E2E', () => {
         customer: {
           id: 'T_2',
           firstName: 'Trevor'
+        },
+        product: {
+          id: 'T_1',
+          name: 'Laptop'
         },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',

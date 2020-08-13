@@ -122,5 +122,5 @@ export const SHOP_PRODUCT_REVIEW = gql`
       canReview
     }
   }
-  ${SHOP_REVIEW_STORE_FRAGMENT}
+  ${SHOP_REVIEW_PRODUCT_FRAGMENT}
 `;
