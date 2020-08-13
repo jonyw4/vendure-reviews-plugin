@@ -1,13 +1,14 @@
 import { Connection } from 'typeorm';
 import { InjectConnection } from '@nestjs/typeorm';
-
 import {
   PluginCommonModule,
   VendurePlugin,
   OnVendureBootstrap,
   Order,
   CurrencyCode,
-  Customer
+  Customer,
+  ProductVariant,
+  OrderLine
 } from '@vendure/core';
 
 /**
@@ -20,7 +21,11 @@ export class E2EInjectOrderPlugin implements OnVendureBootstrap {
   constructor(@InjectConnection() private connection: Connection) {}
   async onVendureBootstrap(): Promise<void> {
     const customers = await this.connection.getRepository(Customer).find();
-    await this.connection.getRepository(Order).save([
+    const productsVariant = await this.connection
+      .getRepository(ProductVariant)
+      .find({ relations: ['product'] });
+
+    await this.connection.getRepository(Order).save(
       new Order({
         code: 'T_1',
         state: 'AddingItems',
@@ -37,7 +42,10 @@ export class E2EInjectOrderPlugin implements OnVendureBootstrap {
         subTotal: 10,
         shipping: 0,
         shippingWithTax: 0
-      }),
+      })
+    );
+
+    const completeOrder = await this.connection.getRepository(Order).save(
       new Order({
         code: 'T_2',
         state: 'Fulfilled',
@@ -55,6 +63,13 @@ export class E2EInjectOrderPlugin implements OnVendureBootstrap {
         shipping: 0,
         shippingWithTax: 0
       })
-    ]);
+    );
+
+    await this.connection.getRepository(OrderLine).save(
+      new OrderLine({
+        order: completeOrder,
+        productVariant: productsVariant[0]
+      })
+    );
   }
 }

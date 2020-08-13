@@ -7,7 +7,13 @@ import {
   Resolver
 } from '@nestjs/graphql';
 import { ReviewProductService } from '../../../services/review-product.service';
-import { Permission, Ctx, RequestContext, Allow } from '@vendure/core';
+import {
+  Permission,
+  Ctx,
+  RequestContext,
+  Allow,
+  ProductService
+} from '@vendure/core';
 import { ReviewState } from '../../../helpers';
 import { ReviewProductEntity } from '../../../entities';
 import {
@@ -18,7 +24,18 @@ import {
 
 @Resolver('ReviewProduct')
 export class ReviewProductAdminResolver {
-  constructor(private reviewProductService: ReviewProductService) {}
+  constructor(
+    private reviewProductService: ReviewProductService,
+    private productService: ProductService
+  ) {}
+
+  @ResolveField('product')
+  async product(
+    @Ctx() ctx: RequestContext,
+    @Parent() reviewProduct: ReviewProductEntity
+  ) {
+    return this.productService.findOne(ctx, reviewProduct.product.id);
+  }
 
   @ResolveField('nextStates')
   async nextStates(@Parent() reviewProduct: ReviewProductEntity) {

@@ -2085,6 +2085,7 @@ export type Query = {
   myReviewStore?: Maybe<ReviewStore>;
   /** Get the list of reviews store */
   reviewsStore: ReviewStoreList;
+  availableProductsToReview: ProductList;
 };
 
 export type QueryCollectionsArgs = {
@@ -2119,6 +2120,10 @@ export type QuerySearchArgs = {
 
 export type QueryReviewsStoreArgs = {
   options?: Maybe<ReviewStoreListOptions>;
+};
+
+export type QueryAvailableProductsToReviewArgs = {
+  options?: Maybe<ProductListOptions>;
 };
 
 export type Refund = Node & {

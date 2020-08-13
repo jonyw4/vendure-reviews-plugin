@@ -60,3 +60,51 @@ export const ADMIN_TRANSITION_REVIEW_STORE = gql`
   }
   ${ADMIN_REVIEW_STORE_FRAGMENT}
 `;
+
+export const ADMIN_REVIEW_PRODUCT_FRAGMENT = gql`
+  fragment AdminReviewProduct on ReviewProduct {
+    id
+    title
+    description
+    state
+    stars
+    nextStates
+    customer {
+      id
+      firstName
+    }
+    product {
+      id
+      name
+    }
+  }
+`;
+
+export const ADMIN_REVIEW_PRODUCT = gql`
+  query ReviewProduct($id: ID!) {
+    reviewProduct(id: $id) {
+      ...AdminReviewProduct
+    }
+  }
+  ${ADMIN_REVIEW_PRODUCT_FRAGMENT}
+`;
+
+export const ADMIN_REVIEWS_PRODUCT = gql`
+  query ListReviewProduct {
+    reviewsProduct {
+      items {
+        ...AdminReviewProduct
+      }
+    }
+  }
+  ${ADMIN_REVIEW_PRODUCT_FRAGMENT}
+`;
+
+export const ADMIN_TRANSITION_REVIEW_PRODUCT = gql`
+  mutation transitionReviewProductToState($id: ID!, $state: String!) {
+    transitionReviewProductToState(id: $id, state: $state) {
+      ...AdminReviewProduct
+    }
+  }
+  ${ADMIN_REVIEW_PRODUCT_FRAGMENT}
+`;

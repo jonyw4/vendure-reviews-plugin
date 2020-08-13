@@ -9,7 +9,9 @@ import {
   OrderLine,
   Customer,
   Product,
-  ID
+  ID,
+  translateDeep,
+  RequestContext
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
 import { ReviewProductStateTransitionEvent } from '../events';
@@ -33,7 +35,7 @@ export class ReviewProductService extends ReviewService<
       eventBus,
       ReviewProductEntity,
       ReviewProductStateTransitionEvent,
-      ['customer', 'product']
+      ['customer']
     );
   }
 
@@ -69,64 +71,75 @@ export class ReviewProductService extends ReviewService<
 
     const countProductBoughtByCustomer = await this.connection
       .getRepository(OrderLine)
-      .count({
-        relations: ['order', 'productVariant'],
-        where: {
-          order: {
-            customer: customer,
-            active: false
-          },
-          productVariant: {
-            productId: product.id
-          }
-        }
-      });
+      .createQueryBuilder('order_line')
+      .select('id')
+      .leftJoin('order_line.order', 'order')
+      .leftJoin('order_line.productVariant', 'productVariant')
+      .andWhere('order.active = false')
+      .andWhere('productVariant.productId = :id', { id: product.id })
+      .where('order.customer = :id', { id: customer.id })
+      .getCount();
+
     return countProductBoughtByCustomer > 0;
   }
 
   async availableProductsToReview(
+    ctx: RequestContext,
     customer: Customer,
     options?: ListQueryOptions<Product>
   ) {
-    const customerReviews = await this.connection
+    // Separate the query in two parts. First to get the customer review
+    const customerReviewQb = await this.connection
       .getRepository(ReviewProductEntity)
-      .find({
-        select: ['id', 'product'],
-        where: {
-          customer: customer
-        }
-      });
+      .createQueryBuilder('review_product')
+      .select('review_product.productId', 'productId')
+      .where('customerId = :id', { id: customer.id });
 
-    const orderLinesWithDistinctProductVariants = await this.listQueryBuilder
-      .build(
-        OrderLine,
-        {},
-        {
-          relations: ['order', 'productVariant'],
-          where: { order: { customer: customer, active: false } }
-        }
-      )
-      .select('productVariant')
+    // Now we get all products to review based on the products that the user bought and didn't review
+    const availableProductsToReview = await this.connection
+      .getRepository(OrderLine)
+      .createQueryBuilder('order_line')
       .distinct(true)
-      .getMany();
+      .select('productVariant.productId', 'productId')
+      .leftJoin('order_line.order', 'order')
+      .leftJoin('order_line.productVariant', 'productVariant')
+      .andWhere('order.customer = :id', { id: customer.id })
+      .andWhere('order.active = false')
+      .andWhere(
+        `productVariant.productId NOT IN (${customerReviewQb.getQuery()})`
+      )
+      .setParameters(customerReviewQb.getParameters())
+      .getRawMany<{
+        productId: ID;
+      }>();
 
-    const availableProductsToReviewIds = orderLinesWithDistinctProductVariants.reduce(
-      (value, line) => value.add(line.productVariant.productId),
-      new Set<ID>()
-    );
-
-    customerReviews.map((r) =>
-      availableProductsToReviewIds.delete(r.product.id)
+    const availableProductsToReviewIds = availableProductsToReview.reduce(
+      (value, item) => [...value, item.productId],
+      <Array<ID>>[]
     );
 
     return await this.listQueryBuilder
       .build(Product, options, {
-        where: { id: In([...availableProductsToReviewIds]) }
+        relations: [
+          'featuredAsset',
+          'assets',
+          'channels',
+          'facetValues',
+          'facetValues.facet'
+        ],
+        channelId: ctx.channelId,
+        where: { deletedAt: null, id: In(availableProductsToReviewIds) }
       })
       .getManyAndCount()
-      .then(([products, totalItems]) => {
+      .then(async ([products, totalItems]) => {
+        const items = products.map((product) =>
+          translateDeep(product, ctx.languageCode, [
+            'facetValues',
+            ['facetValues', 'facet']
+          ])
+        );
         return {
-          items: products,
+          items,
           totalItems
         };
       });

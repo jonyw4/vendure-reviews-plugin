@@ -1,3 +1,4 @@
+import { shopCtx } from './../test-helpers/contexts';
 import {
   exampleProduct,
   exampleCustomer,
@@ -67,9 +68,6 @@ describe('ReviewProductService', () => {
   describe('checkIfCustomerIsValidToCreateReviewProduct', () => {
     it('should try to check if customer is valid to create review product and succeeds', async () => {
       connection
-        .getRepository(Product)
-        .findOneOrFail.mockImplementation(async () => exampleProduct);
-      connection
         .getRepository(ReviewProductEntity)
         .count.mockImplementationOnce(async () => 0);
       connection
@@ -137,7 +135,7 @@ describe('ReviewProductService', () => {
           3
         ]);
       await expect(
-        resolver.availableProductsToReview(exampleCustomer, {})
+        resolver.availableProductsToReview(shopCtx, exampleCustomer, {})
       ).resolves.toEqual({ items: examplesReviewProduct, totalItems: 3 });
     });
   });

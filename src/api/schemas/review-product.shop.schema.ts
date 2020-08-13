@@ -6,6 +6,7 @@ export const reviewProductShopApiExtension = gql`
     title: String!
     description: String!
     stars: Int!
+    product: Product!
   }
   input CreateReviewProductInput {
     productId: ID!
@@ -27,6 +28,11 @@ export const reviewProductShopApiExtension = gql`
     reviewAvg: Int!
     reviews(options: ReviewProductListOptions): ReviewProductList!
     canReview: Boolean
+  }
+  extend type Query {
+    availableProductsToReview(options: ProductListOptions): ProductList!
+    reviewProduct(id: ID!): ReviewProduct
+    reviewsProduct(options: ReviewProductListOptions): ReviewProductList!
   }
   extend type Mutation {
     createReviewProduct(input: CreateReviewProductInput!): ReviewProduct
