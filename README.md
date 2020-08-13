@@ -8,12 +8,12 @@
 
 ## 🌟 Features
 - Ability to customer create review of the Company using with [NPS](https://en.wikipedia.org/wiki/Net_Promoter)
+- Ability to customer get, list, update and create review of an Product
 - Manage the state of reviews approving every changes by the customer
 - On every change of state its dispatch a new Event, so you can extend the features of this package to send email or something like that
 
 ## Todo
 - Admin UI
-- Products Review
 - Order Review
 
 ## ⚙️ Install
@@ -27,17 +27,18 @@ npm install vendure-reviews-plugin --save
 
 ### 3. Add the plugin in Vendure configuration
 ```typescript
-import { ReviewsStorePlugin } from 'vendure-reviews-plugin';
+import { ReviewsStorePlugin, ReviewsProductPlugin } from 'vendure-reviews-plugin';
 const config: VendureConfig = {
   ...
   plugins: [
-    ReviewsStorePlugin
+    ReviewsStorePlugin,
+    ReviewsProductPlugin
   ]
 }
 ```
 
 ## 📚 How to use?
-If you want to use queries and mutation of this package [you can see the all on this file](https://github.com/jonyw4/vendure-reviews-plugin/blob/master/src/api/schema/shop.ts)
+If you want to use queries and mutation of this package [you can see the all on this file](https://github.com/jonyw4/vendure-reviews-plugin/blob/master/src/api/schema/)
 
 ## ❗️ License
 MIT 
