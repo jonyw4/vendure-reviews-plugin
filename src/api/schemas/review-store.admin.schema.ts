@@ -19,7 +19,7 @@ export const reviewStoreAdminApiExtension = gql`
   }
   extend type Query {
     "Get the average of review store"
-    avgReviewStore: Int
+    avgReviewStore: Float
 
     "Get the review store"
     reviewStore(id: ID!): ReviewStore

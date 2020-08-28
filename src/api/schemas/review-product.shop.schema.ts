@@ -25,11 +25,13 @@ export const reviewProductShopApiExtension = gql`
     totalItems: Int!
   }
   extend type Product {
-    reviewAvg: Int!
+    reviewAvg: Float!
     reviews(options: ReviewProductListOptions): ReviewProductList!
+    "Use this in your Storefront to show in product page if user can create a review"
     canReview: Boolean
   }
   extend type Query {
+    "A list of available products to user review"
     availableProductsToReview(options: ProductListOptions): ProductList!
     reviewProduct(id: ID!): ReviewProduct
     reviewsProduct(options: ReviewProductListOptions): ReviewProductList!
