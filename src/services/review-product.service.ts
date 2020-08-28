@@ -15,6 +15,7 @@ import {
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
 import { ReviewProductStateTransitionEvent } from '../events';
+import { DEFAULT_CACHE_TIMEOUT } from '../consts';
 import { ListQueryOptions } from '@vendure/core/dist/common/types/common-types';
 
 @Injectable()
@@ -45,6 +46,7 @@ export class ReviewProductService extends ReviewService<
       .createQueryBuilder('review_product')
       .select('AVG(stars)', 'stars')
       .where('state = :state', { state: 'Authorized' })
+      .cache(DEFAULT_CACHE_TIMEOUT)
       .getRawOne();
     return stars ? stars : 0;
   }
@@ -112,6 +114,7 @@ export class ReviewProductService extends ReviewService<
         `productVariant.productId NOT IN (${customerReviewQb.getQuery()})`
       )
       .setParameters(customerReviewQb.getParameters())
+      .cache(DEFAULT_CACHE_TIMEOUT)
       .getRawMany<{
         productId: ID;
       }>();

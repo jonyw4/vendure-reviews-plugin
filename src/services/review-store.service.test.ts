@@ -170,10 +170,14 @@ describe('ReviewStoreService', () => {
       it('should return the average', async () => {
         connection
           .getRepository(ReviewStoreEntity)
-          .createQueryBuilder('review_store')
-          .select('AVG(nps)', 'nps')
-          .where('state = :state', { state: 'Authorized' })
-          .getRawOne.mockImplementation(async () => ({ nps: 10 }));
+          // @ts-ignore
+          .createQueryBuilder.mockImplementation(() => ({
+            select: jest.fn().mockReturnThis(),
+            leftJoin: jest.fn().mockReturnThis(),
+            where: jest.fn().mockReturnThis(),
+            cache: jest.fn().mockReturnThis(),
+            getRawOne: jest.fn().mockImplementation(async () => ({ nps: 10 }))
+          }));
         await expect(resolver.getNPSAvg()).resolves.toBe(10);
       });
     });

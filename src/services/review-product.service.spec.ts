@@ -48,10 +48,14 @@ describe('ReviewProductService', () => {
     it('should return the average', async () => {
       connection
         .getRepository(ReviewProductEntity)
-        .createQueryBuilder('review_product')
-        .select('AVG(stars)', 'starasync s')
-        .where('state = :state', { state: 'Authorized' })
-        .getRawOne.mockImplementation(async () => ({ stars: 5 }));
+        // @ts-ignore
+        .createQueryBuilder.mockImplementation(() => ({
+          select: jest.fn().mockReturnThis(),
+          leftJoin: jest.fn().mockReturnThis(),
+          where: jest.fn().mockReturnThis(),
+          cache: jest.fn().mockReturnThis(),
+          getRawOne: jest.fn().mockImplementation(async () => ({ stars: 5 }))
+        }));
       await expect(resolver.getAvgStars()).resolves.toBe(5);
     });
   });
@@ -77,6 +81,7 @@ describe('ReviewProductService', () => {
           select: jest.fn().mockReturnThis(),
           leftJoin: jest.fn().mockReturnThis(),
           andWhere: jest.fn().mockReturnThis(),
+          cache: jest.fn().mockReturnThis(),
           getCount: jest.fn().mockImplementationOnce(async () => 1)
         }));
 
@@ -111,6 +116,7 @@ describe('ReviewProductService', () => {
           select: jest.fn().mockReturnThis(),
           leftJoin: jest.fn().mockReturnThis(),
           andWhere: jest.fn().mockReturnThis(),
+          cache: jest.fn().mockReturnThis(),
           getCount: jest.fn().mockImplementationOnce(async () => 0)
         }));
 
@@ -136,6 +142,7 @@ describe('ReviewProductService', () => {
           setParameters: jest.fn().mockReturnThis(),
           getParameters: jest.fn().mockReturnThis(),
           leftJoin: jest.fn().mockReturnThis(),
+          cache: jest.fn().mockReturnThis(),
           andWhere: jest.fn().mockReturnThis(),
           getRawMany: jest
             .fn()
