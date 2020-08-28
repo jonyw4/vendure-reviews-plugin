@@ -8,6 +8,7 @@ export const ADMIN_REVIEW_STORE_FRAGMENT = gql`
     state
     nps
     nextStates
+    customerNameIsPublic
     customer {
       id
       firstName
@@ -69,6 +70,7 @@ export const ADMIN_REVIEW_PRODUCT_FRAGMENT = gql`
     state
     stars
     nextStates
+    customerNameIsPublic
     customer {
       id
       firstName

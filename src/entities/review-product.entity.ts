@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { ReviewBaseEntity } from './review-base.entity';
 import { DeepPartial } from '@vendure/core';
 
-@Entity()
+@Entity('ReviewProduct')
 export class ReviewProductEntity extends ReviewBaseEntity {
   constructor(input?: DeepPartial<ReviewProductEntity>) {
     super(input);
@@ -16,4 +16,8 @@ export class ReviewProductEntity extends ReviewBaseEntity {
 
   @ManyToOne(() => Product)
   product: Product;
+
+  public get customerName(): string | null {
+    return this.customerNameIsPublic ? this.customer.firstName : null;
+  }
 }

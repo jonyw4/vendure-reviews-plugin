@@ -6,6 +6,8 @@ export const SHOP_REVIEW_STORE_FRAGMENT = gql`
     title
     description
     nps
+    customerNameIsPublic
+    customerName
   }
 `;
 
@@ -58,6 +60,8 @@ export const SHOP_REVIEW_PRODUCT_FRAGMENT = gql`
     title
     description
     stars
+    customerNameIsPublic
+    customerName
   }
 `;
 

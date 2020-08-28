@@ -15,6 +15,7 @@ export const exampleReviewProduct = new ReviewProductEntity({
   description: 'Good product',
   state: 'Created',
   stars: 5,
+  customerNameIsPublic: true,
   customer: exampleCustomer,
   product: exampleProduct
 });
@@ -27,6 +28,7 @@ export const examplesReviewProduct = [
     description: 'Good',
     state: 'Created',
     stars: 4,
+    customerNameIsPublic: true,
     customer: new Customer({
       firstName: 'Tony'
     }),
@@ -38,6 +40,7 @@ export const examplesReviewProduct = [
     description: 'Bad',
     state: 'Created',
     stars: 3,
+    customerNameIsPublic: false,
     customer: new Customer({
       firstName: 'Any'
     }),
@@ -51,6 +54,7 @@ export const exampleReviewStore = new ReviewStoreEntity({
   description: 'Good company',
   state: 'Created',
   nps: 9,
+  customerNameIsPublic: true,
   customer: exampleCustomer
 });
 
@@ -62,6 +66,7 @@ export const examplesReviewStore = [
     description: 'Good',
     state: 'Created',
     nps: 8,
+    customerNameIsPublic: true,
     customer: new Customer({
       firstName: 'Tony'
     })
@@ -72,6 +77,7 @@ export const examplesReviewStore = [
     description: 'Bad',
     state: 'Created',
     nps: 8,
+    customerNameIsPublic: false,
     customer: new Customer({
       firstName: 'Any'
     })

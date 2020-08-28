@@ -6,16 +6,20 @@ export const reviewStoreShopApiExtension = gql`
     title: String!
     description: String!
     nps: Int!
+    customerName: String
+    customerNameIsPublic: Boolean!
   }
   input CreateReviewStoreInput {
     title: String!
     description: String!
     nps: Int!
+    customerNameIsPublic: Boolean!
   }
   input UpdateReviewStoreInput {
     title: String
     description: String
     nps: Int
+    customerNameIsPublic: Boolean
   }
 
   type ReviewStoreList implements PaginatedList {
