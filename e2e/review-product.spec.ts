@@ -361,9 +361,8 @@ describe('Review Product E2E', () => {
         },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',
-        customerName: 'Trevor',
-        customerNameIsPublic: true,
-        ...exampleCreteReviewProduct
+        ...exampleCreteReviewProduct,
+        customerNameIsPublic: true
       }
     });
   });
