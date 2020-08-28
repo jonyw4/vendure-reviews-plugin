@@ -2,7 +2,13 @@ import * as Types from '../../src/types/generated-admin-schema';
 
 export type AdminReviewStoreFragment = { __typename?: 'ReviewStore' } & Pick<
   Types.ReviewStore,
-  'id' | 'title' | 'description' | 'state' | 'nps' | 'nextStates'
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'state'
+  | 'nps'
+  | 'nextStates'
+  | 'customerNameIsPublic'
 > & {
     customer: { __typename?: 'Customer' } & Pick<
       Types.Customer,
@@ -66,7 +72,13 @@ export type AdminReviewProductFragment = {
   __typename?: 'ReviewProduct';
 } & Pick<
   Types.ReviewProduct,
-  'id' | 'title' | 'description' | 'state' | 'stars' | 'nextStates'
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'state'
+  | 'stars'
+  | 'nextStates'
+  | 'customerNameIsPublic'
 > & {
     customer: { __typename?: 'Customer' } & Pick<
       Types.Customer,

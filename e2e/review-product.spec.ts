@@ -51,7 +51,8 @@ const customerTestPassword = 'test';
 const exampleCreteReviewProduct = {
   title: 'Good company',
   description: 'Good company',
-  stars: 5
+  stars: 5,
+  customerNameIsPublic: false
 };
 
 describe('Review Product E2E', () => {
@@ -139,6 +140,7 @@ describe('Review Product E2E', () => {
     ).resolves.toEqual({
       createReviewProduct: {
         id: 'T_1',
+        customerName: null,
         ...exampleCreteReviewProduct
       }
     });
@@ -186,6 +188,7 @@ describe('Review Product E2E', () => {
         items: [
           {
             id: 'T_1',
+            customerName: null,
             ...exampleCreteReviewProduct
           }
         ]
@@ -199,6 +202,7 @@ describe('Review Product E2E', () => {
     ).resolves.toEqual({
       reviewProduct: {
         id: 'T_1',
+        customerName: null,
         ...exampleCreteReviewProduct
       }
     });
@@ -300,6 +304,7 @@ describe('Review Product E2E', () => {
           items: [
             {
               id: 'T_1',
+              customerName: null,
               ...exampleCreteReviewProduct
             }
           ]
@@ -321,13 +326,16 @@ describe('Review Product E2E', () => {
       >(SHOP_UPDATE_REVIEW_PRODUCT, {
         input: {
           id: 'T_1',
-          ...exampleCreteReviewProduct
+          ...exampleCreteReviewProduct,
+          customerNameIsPublic: true
         }
       })
     ).resolves.toEqual({
       updateReviewProduct: {
         id: 'T_1',
-        ...exampleCreteReviewProduct
+        ...exampleCreteReviewProduct,
+        customerNameIsPublic: true,
+        customerName: 'Trevor'
       }
     });
   });
@@ -353,7 +361,8 @@ describe('Review Product E2E', () => {
         },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',
-        ...exampleCreteReviewProduct
+        ...exampleCreteReviewProduct,
+        customerNameIsPublic: true
       }
     });
   });

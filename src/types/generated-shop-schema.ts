@@ -115,6 +115,7 @@ export type BooleanCustomFieldConfig = CustomField & {
   __typename?: 'BooleanCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -230,7 +231,6 @@ export type CollectionTranslation = {
 export type ConfigArg = {
   __typename?: 'ConfigArg';
   name: Scalars['String'];
-  type: Scalars['String'];
   value: Scalars['String'];
 };
 
@@ -238,14 +238,14 @@ export type ConfigArgDefinition = {
   __typename?: 'ConfigArgDefinition';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  config?: Maybe<Scalars['JSON']>;
+  ui?: Maybe<Scalars['JSON']>;
 };
 
 export type ConfigArgInput = {
   name: Scalars['String'];
-  type: Scalars['String'];
   value: Scalars['String'];
 };
 
@@ -329,12 +329,14 @@ export type CreateReviewProductInput = {
   title: Scalars['String'];
   description: Scalars['String'];
   stars: Scalars['Int'];
+  customerNameIsPublic: Scalars['Boolean'];
 };
 
 export type CreateReviewStoreInput = {
   title: Scalars['String'];
   description: Scalars['String'];
   nps: Scalars['Int'];
+  customerNameIsPublic: Scalars['Boolean'];
 };
 
 /**
@@ -745,6 +747,7 @@ export type CustomerSortParameter = {
 export type CustomField = {
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -797,6 +800,7 @@ export type DateTimeCustomFieldConfig = CustomField & {
   __typename?: 'DateTimeCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -883,6 +887,7 @@ export type FloatCustomFieldConfig = CustomField & {
   __typename?: 'FloatCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -986,6 +991,7 @@ export type IntCustomFieldConfig = CustomField & {
   __typename?: 'IntCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -1325,6 +1331,8 @@ export type LocaleStringCustomFieldConfig = CustomField & {
   __typename?: 'LocaleStringCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
+  length?: Maybe<Scalars['Int']>;
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
   readonly?: Maybe<Scalars['Boolean']>;
@@ -1357,6 +1365,8 @@ export type Mutation = {
   addItemToOrder?: Maybe<Order>;
   /** Remove an OrderLine from the Order */
   removeOrderLine?: Maybe<Order>;
+  /** Remove all OrderLine from the Order */
+  removeAllOrderLines?: Maybe<Order>;
   /**
    * Adjusts an OrderLine. If custom fields are defined on the OrderLine entity, a
    * third argument 'customFields' of type `OrderLineCustomFieldsInput` will be available.
@@ -1779,6 +1789,7 @@ export type PaymentMethod = Node & {
   code: Scalars['String'];
   enabled: Scalars['Boolean'];
   configArgs: Array<ConfigArg>;
+  definition: ConfigurableOperationDefinition;
 };
 
 /**
@@ -1847,8 +1858,9 @@ export type Product = Node & {
   facetValues: Array<FacetValue>;
   translations: Array<ProductTranslation>;
   collections: Array<Collection>;
-  reviewAvg: Scalars['Int'];
+  reviewAvg: Scalars['Float'];
   reviews: ReviewProductList;
+  /** Use this in your Storefront to show in product page if user can create a review */
   canReview?: Maybe<Scalars['Boolean']>;
   customFields?: Maybe<Scalars['JSON']>;
 };
@@ -2080,12 +2092,15 @@ export type Query = {
   /** Search Products based on the criteria set by the `SearchInput` */
   search: SearchResponse;
   /** Get the average of review store */
-  avgReviewStore?: Maybe<Scalars['Int']>;
+  avgReviewStore?: Maybe<Scalars['Float']>;
   /** Get the review store of the current customer */
   myReviewStore?: Maybe<ReviewStore>;
   /** Get the list of reviews store */
   reviewsStore: ReviewStoreList;
+  /** A list of available products to user review */
   availableProductsToReview: ProductList;
+  reviewProduct?: Maybe<ReviewProduct>;
+  reviewsProduct: ReviewProductList;
 };
 
 export type QueryCollectionsArgs = {
@@ -2124,6 +2139,14 @@ export type QueryReviewsStoreArgs = {
 
 export type QueryAvailableProductsToReviewArgs = {
   options?: Maybe<ProductListOptions>;
+};
+
+export type QueryReviewProductArgs = {
+  id: Scalars['ID'];
+};
+
+export type QueryReviewsProductArgs = {
+  options?: Maybe<ReviewProductListOptions>;
 };
 
 export type Refund = Node & {
@@ -2171,12 +2194,17 @@ export type ReviewProduct = Node & {
   title: Scalars['String'];
   description: Scalars['String'];
   stars: Scalars['Int'];
+  product: Product;
+  customerName?: Maybe<Scalars['String']>;
+  customerNameIsPublic: Scalars['Boolean'];
 };
 
 export type ReviewProductFilterParameter = {
   title?: Maybe<StringOperators>;
   description?: Maybe<StringOperators>;
   stars?: Maybe<NumberOperators>;
+  customerName?: Maybe<StringOperators>;
+  customerNameIsPublic?: Maybe<BooleanOperators>;
 };
 
 export type ReviewProductList = PaginatedList & {
@@ -2197,6 +2225,7 @@ export type ReviewProductSortParameter = {
   title?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
   stars?: Maybe<SortOrder>;
+  customerName?: Maybe<SortOrder>;
 };
 
 export type ReviewStore = Node & {
@@ -2205,12 +2234,16 @@ export type ReviewStore = Node & {
   title: Scalars['String'];
   description: Scalars['String'];
   nps: Scalars['Int'];
+  customerName?: Maybe<Scalars['String']>;
+  customerNameIsPublic: Scalars['Boolean'];
 };
 
 export type ReviewStoreFilterParameter = {
   title?: Maybe<StringOperators>;
   description?: Maybe<StringOperators>;
   nps?: Maybe<NumberOperators>;
+  customerName?: Maybe<StringOperators>;
+  customerNameIsPublic?: Maybe<BooleanOperators>;
 };
 
 export type ReviewStoreList = PaginatedList & {
@@ -2231,6 +2264,7 @@ export type ReviewStoreSortParameter = {
   title?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
   nps?: Maybe<SortOrder>;
+  customerName?: Maybe<SortOrder>;
 };
 
 export type Role = Node & {
@@ -2267,6 +2301,7 @@ export type SearchInput = {
   facetValueIds?: Maybe<Array<Scalars['ID']>>;
   facetValueOperator?: Maybe<LogicalOperator>;
   collectionId?: Maybe<Scalars['ID']>;
+  collectionSlug?: Maybe<Scalars['String']>;
   groupByProduct?: Maybe<Scalars['Boolean']>;
   take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -2329,6 +2364,7 @@ export type SearchResultSortParameter = {
 export type ServerConfig = {
   __typename?: 'ServerConfig';
   orderProcess: Array<OrderProcessState>;
+  permittedAssetTypes: Array<Scalars['String']>;
   customFieldConfig: CustomFields;
 };
 
@@ -2409,6 +2445,7 @@ export type StringCustomFieldConfig = CustomField & {
   __typename?: 'StringCustomFieldConfig';
   name: Scalars['String'];
   type: Scalars['String'];
+  list: Scalars['Boolean'];
   length?: Maybe<Scalars['Int']>;
   label?: Maybe<Array<LocalizedString>>;
   description?: Maybe<Array<LocalizedString>>;
@@ -2489,12 +2526,14 @@ export type UpdateReviewProductInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   stars?: Maybe<Scalars['Int']>;
+  customerNameIsPublic?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdateReviewStoreInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   nps?: Maybe<Scalars['Int']>;
+  customerNameIsPublic?: Maybe<Scalars['Boolean']>;
 };
 
 export type User = Node & {

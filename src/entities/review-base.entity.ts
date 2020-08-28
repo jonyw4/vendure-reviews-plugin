@@ -14,4 +14,7 @@ export abstract class ReviewBaseEntity extends VendureEntity {
 
   @Column('text')
   description: string;
+
+  @Column('boolean')
+  customerNameIsPublic: boolean;
 }

@@ -2,7 +2,12 @@ import * as Types from '../../src/types/generated-shop-schema';
 
 export type ShopReviewStoreFragment = { __typename?: 'ReviewStore' } & Pick<
   Types.ReviewStore,
-  'id' | 'title' | 'description' | 'nps'
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'nps'
+  | 'customerNameIsPublic'
+  | 'customerName'
 >;
 
 export type CreateReviewStoreMutationVariables = Types.Exact<{
@@ -35,18 +40,6 @@ export type ListReviewStoreQuery = { __typename?: 'Query' } & {
   };
 };
 
-export type AvailableProductsReviewQueryVariables = Types.Exact<{
-  [key: string]: never;
-}>;
-
-export type AvailableProductsReviewQuery = { __typename?: 'Query' } & {
-  availableProductsToReview: { __typename?: 'ProductList' } & {
-    items: Array<
-      { __typename?: 'Product' } & Pick<Types.Product, 'id' | 'name'>
-    >;
-  };
-};
-
 export type MyReviewStoreQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type MyReviewStoreQuery = { __typename?: 'Query' } & {
@@ -66,8 +59,45 @@ export type AvgReviewStoreQuery = { __typename?: 'Query' } & Pick<
 
 export type ShopReviewProductFragment = { __typename?: 'ReviewProduct' } & Pick<
   Types.ReviewProduct,
-  'id' | 'title' | 'description' | 'stars'
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'stars'
+  | 'customerNameIsPublic'
+  | 'customerName'
 >;
+
+export type AvailableProductsReviewQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
+
+export type AvailableProductsReviewQuery = { __typename?: 'Query' } & {
+  availableProductsToReview: { __typename?: 'ProductList' } & {
+    items: Array<
+      { __typename?: 'Product' } & Pick<Types.Product, 'id' | 'name'>
+    >;
+  };
+};
+
+export type ReviewProductQueryVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+}>;
+
+export type ReviewProductQuery = { __typename?: 'Query' } & {
+  reviewProduct?: Types.Maybe<
+    { __typename?: 'ReviewProduct' } & ShopReviewProductFragment
+  >;
+};
+
+export type ListReviewProductQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
+
+export type ListReviewProductQuery = { __typename?: 'Query' } & {
+  reviewsProduct: { __typename?: 'ReviewProductList' } & {
+    items: Array<{ __typename?: 'ReviewProduct' } & ShopReviewProductFragment>;
+  };
+};
 
 export type CreateReviewProductMutationVariables = Types.Exact<{
   input: Types.CreateReviewProductInput;

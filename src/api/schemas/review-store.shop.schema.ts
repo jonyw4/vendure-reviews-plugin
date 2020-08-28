@@ -6,16 +6,20 @@ export const reviewStoreShopApiExtension = gql`
     title: String!
     description: String!
     nps: Int!
+    customerName: String
+    customerNameIsPublic: Boolean!
   }
   input CreateReviewStoreInput {
     title: String!
     description: String!
     nps: Int!
+    customerNameIsPublic: Boolean!
   }
   input UpdateReviewStoreInput {
     title: String
     description: String
     nps: Int
+    customerNameIsPublic: Boolean
   }
 
   type ReviewStoreList implements PaginatedList {
@@ -29,7 +33,7 @@ export const reviewStoreShopApiExtension = gql`
   }
   extend type Query {
     "Get the average of review store"
-    avgReviewStore: Int
+    avgReviewStore: Float
 
     "Get the review store of the current customer"
     myReviewStore: ReviewStore

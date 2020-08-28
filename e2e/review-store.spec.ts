@@ -53,7 +53,8 @@ const customerTestPassword = 'test';
 const exampleCreteReviewStore = {
   title: 'Good company',
   description: 'Good company',
-  nps: 10
+  nps: 10,
+  customerNameIsPublic: false
 };
 
 describe('Review Store E2E', () => {
@@ -117,7 +118,8 @@ describe('Review Store E2E', () => {
     ).resolves.toEqual({
       createReviewStore: {
         id: 'T_1',
-        ...exampleCreteReviewStore
+        ...exampleCreteReviewStore,
+        customerName: null
       }
     });
   });
@@ -143,6 +145,7 @@ describe('Review Store E2E', () => {
     ).resolves.toEqual({
       myReviewStore: {
         id: 'T_1',
+        customerName: null,
         ...exampleCreteReviewStore
       }
     });
@@ -238,6 +241,7 @@ describe('Review Store E2E', () => {
         items: [
           {
             id: 'T_1',
+            customerName: null,
             ...exampleCreteReviewStore
           }
         ]
@@ -277,13 +281,16 @@ describe('Review Store E2E', () => {
         UpdateReviewStoreMutationVariables
       >(SHOP_UPDATE_REVIEW_STORE, {
         input: {
-          ...exampleCreteReviewStore
+          ...exampleCreteReviewStore,
+          customerNameIsPublic: true
         }
       })
     ).resolves.toEqual({
       updateReviewStore: {
         id: 'T_1',
-        ...exampleCreteReviewStore
+        ...exampleCreteReviewStore,
+        customerNameIsPublic: true,
+        customerName: 'Trevor'
       }
     });
   });
@@ -305,7 +312,8 @@ describe('Review Store E2E', () => {
         },
         nextStates: ['Authorized', 'Denied'],
         state: 'Updated',
-        ...exampleCreteReviewStore
+        ...exampleCreteReviewStore,
+        customerNameIsPublic: true
       }
     });
   });

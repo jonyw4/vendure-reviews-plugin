@@ -9,6 +9,7 @@ export const reviewStoreAdminApiExtension = gql`
     nps: Int!
     nextStates: [String!]!
     customer: Customer!
+    customerNameIsPublic: Boolean
   }
   type ReviewStoreList implements PaginatedList {
     items: [ReviewStore!]!
@@ -19,7 +20,7 @@ export const reviewStoreAdminApiExtension = gql`
   }
   extend type Query {
     "Get the average of review store"
-    avgReviewStore: Int
+    avgReviewStore: Float
 
     "Get the review store"
     reviewStore(id: ID!): ReviewStore

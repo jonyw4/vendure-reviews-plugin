@@ -3,7 +3,7 @@ import { Column, OneToOne, Entity, JoinColumn } from 'typeorm';
 import { ReviewBaseEntity } from './review-base.entity';
 import { DeepPartial } from '@vendure/core';
 
-@Entity()
+@Entity('ReviewStore')
 export class ReviewStoreEntity extends ReviewBaseEntity {
   constructor(input?: DeepPartial<ReviewStoreEntity>) {
     super(input);
@@ -14,4 +14,8 @@ export class ReviewStoreEntity extends ReviewBaseEntity {
   @OneToOne(() => Customer)
   @JoinColumn()
   customer: Customer;
+
+  public get customerName(): string | null {
+    return this.customerNameIsPublic ? this.customer.firstName : null;
+  }
 }

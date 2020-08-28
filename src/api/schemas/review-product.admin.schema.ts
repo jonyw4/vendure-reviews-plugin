@@ -10,6 +10,7 @@ export const reviewProductAdminApiExtension = gql`
     nextStates: [String!]!
     customer: Customer!
     product: Product!
+    customerNameIsPublic: Boolean
   }
   type ReviewProductList implements PaginatedList {
     items: [ReviewProduct!]!

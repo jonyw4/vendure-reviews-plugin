@@ -7,29 +7,35 @@ export const reviewProductShopApiExtension = gql`
     description: String!
     stars: Int!
     product: Product!
+    customerName: String
+    customerNameIsPublic: Boolean!
   }
   input CreateReviewProductInput {
     productId: ID!
     title: String!
     description: String!
     stars: Int!
+    customerNameIsPublic: Boolean!
   }
   input UpdateReviewProductInput {
     id: ID!
     title: String
     description: String
     stars: Int
+    customerNameIsPublic: Boolean
   }
   type ReviewProductList implements PaginatedList {
     items: [ReviewProduct!]!
     totalItems: Int!
   }
   extend type Product {
-    reviewAvg: Int!
+    reviewAvg: Float!
     reviews(options: ReviewProductListOptions): ReviewProductList!
+    "Use this in your Storefront to show in product page if user can create a review"
     canReview: Boolean
   }
   extend type Query {
+    "A list of available products to user review"
     availableProductsToReview(options: ProductListOptions): ProductList!
     reviewProduct(id: ID!): ReviewProduct
     reviewsProduct(options: ReviewProductListOptions): ReviewProductList!

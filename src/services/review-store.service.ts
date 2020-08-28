@@ -10,6 +10,7 @@ import {
   Customer
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
+import { DEFAULT_CACHE_TIMEOUT } from '../consts';
 import { ReviewStoreStateTransitionEvent } from '../events';
 
 @Injectable()
@@ -48,6 +49,7 @@ export class ReviewStoreService extends ReviewService<
       .createQueryBuilder('review_store')
       .select('AVG(nps)', 'nps')
       .where('state = :state', { state: 'Authorized' })
+      .cache(DEFAULT_CACHE_TIMEOUT)
       .getRawOne();
     return nps ? nps : 0;
   }
