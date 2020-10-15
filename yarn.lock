@@ -2892,6 +2892,11 @@
   resolved "https://registry.yarnpkg.com/@vendure/common/-/common-0.15.0.tgz#c84624cecce71b02b28855da0f5c268054417cb9"
   integrity sha512-PZu6cQIwYgKnlFjSWMP8EiFlaB/cR7UbDNJidmnBK7u3PgIlwL94TADq26ind2Azef//mkHjI3D6JXNrYRq66Q==
 
+"@vendure/common@^0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@vendure/common/-/common-0.16.1.tgz#a33da6c061749bc71cbc028c5319991b26bcd48b"
+  integrity sha512-7pRM/oJIBAZ7nMJomF/AzB2EQUu1vTpt562E2kkZepKmJ1mwUYzMi0aFFV/zvSTQPe4PkS+kSe+EOp+IajqKUQ==
+
 "@vendure/core@0.15.0":
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/@vendure/core/-/core-0.15.0.tgz#e0e63d6817d2ec7dbd31b4d5fd426c5929844e0e"
@@ -2953,19 +2958,19 @@
     semver "^7.1.3"
     tcp-port-used "^1.0.1"
 
-"@vendure/testing@0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@vendure/testing/-/testing-0.15.0.tgz#f85ab190e996828e62cd8992bd44192d413f75af"
-  integrity sha512-Yk7wfpV++HJF0M/QNqT41FAWglPvRaZhvDlBqJpqFvuiWXKo5nopnXpBRW4TTvbgU7l9pQZfPdNVvk67LsTiyA==
+"@vendure/testing@0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@vendure/testing/-/testing-0.16.1.tgz#28f805a858842976bc519955242e77db3b581335"
+  integrity sha512-/orPIljaNjPYbHHlIkkN6MTxAqYaIo3rWazPiURWBKZ84zZu5vOUljOEqWBgUnnHYHu4HWN1N8IzwFXLpi3nlQ==
   dependencies:
     "@types/node-fetch" "^2.5.4"
-    "@vendure/common" "^0.15.0"
+    "@vendure/common" "^0.16.1"
     faker "^4.1.0"
     form-data "^3.0.0"
-    graphql "^14.5.8"
+    graphql "15.3.0"
     graphql-tag "^2.10.1"
     node-fetch "^2.6.0"
-    sql.js "1.1.0"
+    sql.js "1.3.2"
 
 "@vendure/ui-devkit@0.15.0":
   version "0.15.0"
@@ -7629,7 +7634,12 @@ graphql@14.6.0:
   dependencies:
     iterall "^1.2.2"
 
-graphql@^14.5.3, graphql@^14.5.8, graphql@^14.6.0:
+graphql@15.3.0:
+  version "15.3.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
+  integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
+
+graphql@^14.5.3, graphql@^14.6.0:
   version "14.7.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
@@ -14129,10 +14139,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-sql.js@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/sql.js/-/sql.js-1.1.0.tgz#dc49b8da24f7543faa237df3b5ed8dbcbab84b08"
-  integrity sha512-UQHbTDtXiL0HvWq5PkPyomkv/zhxcWKLeG/hkRFH65dmbfDvKolC0u96VdZUSOHA9om6w0cbJQ5Cv7K2M6xnwA==
+sql.js@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/sql.js/-/sql.js-1.3.2.tgz#ce0c7b9d884a7f50476e4c2fb29093e10a83ab09"
+  integrity sha512-vRdzoj4TCrCX8yI2mv0OVVEuOOz2IlhEfw1x1Q65BhpmLep46iu+M04zxln4u2mHRk+wj7avFq2L3/1gQS1orQ==
 
 sqlstring@2.3.1:
   version "2.3.1"
