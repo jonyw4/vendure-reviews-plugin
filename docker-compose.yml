@@ -1,7 +1,6 @@
 version: "3"
 services:
   database:
-    container_name: database
     image: mysql:5.7
     ports:
       - "3306:3306"
@@ -11,7 +10,6 @@ services:
       MYSQL_DATABASE: vendure
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   dev:
-    container_name: dev
     image: mcr.microsoft.com/vscode/devcontainers/typescript-node:0-12
     command: /bin/sh -c "while sleep 1000; do :; done"
     ports:
