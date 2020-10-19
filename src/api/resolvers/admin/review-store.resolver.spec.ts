@@ -39,7 +39,7 @@ describe('ReviewStoreAdminResolver', () => {
 
   describe('reviewStore', () => {
     it('should get a review properly', async () => {
-      await expect(resolver.reviewStore({ id: '1' })).resolves.toBe(
+      await expect(resolver.reviewStore(adminCtx, { id: '1' })).resolves.toBe(
         exampleReviewStore
       );
     });
