@@ -1,5 +1,5 @@
 {
-	"name": "Vendure Workspace",
+	"name": "Vendure Reviews Plugin",
 	"dockerComposeFile": [
 		"../docker-compose.yml"
 	],
