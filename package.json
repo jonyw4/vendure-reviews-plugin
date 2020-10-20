@@ -32,7 +32,7 @@
     "@vendure/core": ">=0.16.1"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "9.1.1",
+    "@commitlint/config-conventional": "9.1.2",
     "@golevelup/nestjs-testing": "0.1.2",
     "@graphql-codegen/cli": "1.17.7",
     "@graphql-codegen/core": "1.17.7",
@@ -47,7 +47,7 @@
     "@vendure/create": "0.16.1",
     "@vendure/testing": "0.16.1",
     "codecov": "3.7.2",
-    "commitlint": "9.1.0",
+    "commitlint": "9.1.2",
     "concurrently": "5.3.0",
     "eslint": "7.4.0",
     "eslint-config-prettier": "6.13.0",
