@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
 import { ReviewStoreEntity } from '../entities';
 import {
   EventBus,
   Order,
   CustomerService,
   ListQueryBuilder,
-  Customer
+  Customer,
+  TransactionalConnection
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
 import { DEFAULT_CACHE_TIMEOUT } from '../consts';
@@ -19,7 +18,7 @@ export class ReviewStoreService extends ReviewService<
   ReviewStoreStateTransitionEvent
 > {
   constructor(
-    @InjectConnection() connection: Connection,
+    connection: TransactionalConnection,
     listQueryBuilder: ListQueryBuilder,
     customerService: CustomerService,
     eventBus: EventBus

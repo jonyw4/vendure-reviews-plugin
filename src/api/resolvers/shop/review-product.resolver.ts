@@ -70,7 +70,7 @@ export class ReviewProductShopResolver {
     @Args() { input }: MutationUpdateReviewProductArgs
   ): Promise<ReviewProductEntity> {
     const customer = await this.reviewProductService.getCustomerOrThrow(ctx);
-    await this.reviewProductService.findById(input.id, {
+    await this.reviewProductService.findById(ctx, input.id, {
       where: { customer: customer }
     });
     return await this.reviewProductService.update(ctx, input);
@@ -94,7 +94,7 @@ export class ReviewProductShopResolver {
   @Allow(Permission.Owner)
   async reviewProduct(@Ctx() ctx: RequestContext, @Args() { id }: any) {
     const customer = await this.reviewProductService.getCustomerOrThrow(ctx);
-    return this.reviewProductService.findById(id, {
+    return this.reviewProductService.findById(ctx, id, {
       where: { customer: customer }
     });
   }

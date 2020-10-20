@@ -1,17 +1,16 @@
-import { Connection } from 'typeorm';
 import {
   RequestContext,
   ID,
   ListQueryBuilder,
   EventBus,
   Type,
-  getEntityOrThrow,
   Customer,
   CustomerService,
   DeepPartial,
   patchEntity,
   UnauthorizedError,
-  ExtendedListQueryOptions
+  ExtendedListQueryOptions,
+  TransactionalConnection
 } from '@vendure/core';
 import { FindOneOptions } from 'typeorm';
 import { ReviewStateTransitionEvent } from '../events/review-state-transition.event';
@@ -31,7 +30,7 @@ export class ReviewService<
 > {
   reviewStateMachine: ReviewStateMachine<Et>;
   constructor(
-    protected connection: Connection,
+    protected connection: TransactionalConnection,
     protected listQueryBuilder: ListQueryBuilder,
     protected customerService: CustomerService,
     protected eventBus: EventBus,
@@ -69,8 +68,12 @@ export class ReviewService<
       });
   }
 
-  async findById(id: ID, options?: FindOneOptions<Et>): Promise<Et> {
-    return await getEntityOrThrow(this.connection, this.entity, id, {
+  async findById(
+    ctx: RequestContext,
+    id: ID,
+    options?: FindOneOptions<Et>
+  ): Promise<Et> {
+    return await this.connection.getEntityOrThrow(ctx, this.entity, id, {
       ...options,
       relations: this.entityRelations
     });
@@ -80,7 +83,7 @@ export class ReviewService<
     ctx: RequestContext,
     input: DeepPartial<Et> & { id: ID }
   ): Promise<Et> {
-    const review = await this.findById(input.id);
+    const review = await this.findById(ctx, input.id);
     // @ts-ignore
     await this.connection.getRepository(this.entity).save(
       //@ts-ignore
@@ -114,7 +117,7 @@ export class ReviewService<
       return;
     }
 
-    const customer = await this.customerService.findOneByUserId(userId);
+    const customer = await this.customerService.findOneByUserId(ctx, userId);
 
     if (!customer) {
       return;

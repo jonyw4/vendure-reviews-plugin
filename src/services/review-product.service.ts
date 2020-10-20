@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/typeorm';
-import { Connection, In } from 'typeorm';
+import { In } from 'typeorm';
 import { ReviewProductEntity } from '../entities';
 import {
   EventBus,
@@ -11,7 +10,8 @@ import {
   Product,
   ID,
   translateDeep,
-  RequestContext
+  RequestContext,
+  TransactionalConnection
 } from '@vendure/core';
 import { ReviewService } from '../helpers';
 import { ReviewProductStateTransitionEvent } from '../events';
@@ -24,7 +24,7 @@ export class ReviewProductService extends ReviewService<
   ReviewProductStateTransitionEvent
 > {
   constructor(
-    @InjectConnection() connection: Connection,
+    connection: TransactionalConnection,
     listQueryBuilder: ListQueryBuilder,
     customerService: CustomerService,
     eventBus: EventBus

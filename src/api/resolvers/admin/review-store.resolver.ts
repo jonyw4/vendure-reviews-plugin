@@ -27,8 +27,11 @@ export class ReviewStoreAdminResolver {
 
   @Query()
   @Allow(Permission.ReadOrder)
-  async reviewStore(@Args() { id }: QueryReviewStoreArgs) {
-    return this.reviewStoreService.findById(id);
+  async reviewStore(
+    @Ctx() ctx: RequestContext,
+    @Args() { id }: QueryReviewStoreArgs
+  ) {
+    return this.reviewStoreService.findById(ctx, id);
   }
 
   @Query()
@@ -48,7 +51,7 @@ export class ReviewStoreAdminResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: MutationTransitionReviewStoreToStateArgs
   ) {
-    const review = await this.reviewStoreService.findById(args.id);
+    const review = await this.reviewStoreService.findById(ctx, args.id);
     return this.reviewStoreService.transitionToState(
       ctx,
       review,

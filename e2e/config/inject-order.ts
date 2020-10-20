@@ -48,7 +48,7 @@ export class E2EInjectOrderPlugin implements OnVendureBootstrap {
     const completeOrder = await this.connection.getRepository(Order).save(
       new Order({
         code: 'T_2',
-        state: 'Fulfilled',
+        state: 'Delivered',
         active: false,
         customer: customers[1],
         lines: [],

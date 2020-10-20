@@ -6,12 +6,10 @@ import {
 } from '@vendure/core';
 import { ReviewsStorePlugin, ReviewsProductPlugin } from '../src';
 
-const PORT = Number(process.env.PORT) || 3000;
-
 export const config: VendureConfig = {
   apiOptions: {
     hostname: '0.0.0.0',
-    port: PORT,
+    port: 3000,
     adminApiPath: 'admin-api',
     adminApiPlayground: {
       settings: {
@@ -35,11 +33,11 @@ export const config: VendureConfig = {
   dbConnectionOptions: {
     type: 'mysql',
     synchronize: true,
-    host: 'localhost',
+    host: 'host.docker.internal',
     port: 3306,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    username: 'root',
+    password: '',
+    database: 'vendure',
     logging: false
   },
   paymentOptions: {
