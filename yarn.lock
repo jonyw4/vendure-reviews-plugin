@@ -3373,6 +3373,11 @@
   resolved "https://registry.yarnpkg.com/@vendure/common/-/common-0.16.1.tgz#a33da6c061749bc71cbc028c5319991b26bcd48b"
   integrity sha512-7pRM/oJIBAZ7nMJomF/AzB2EQUu1vTpt562E2kkZepKmJ1mwUYzMi0aFFV/zvSTQPe4PkS+kSe+EOp+IajqKUQ==
 
+"@vendure/common@^0.18.4":
+  version "0.18.4"
+  resolved "https://registry.yarnpkg.com/@vendure/common/-/common-0.18.4.tgz#f5ab3e2b7bcf35546c9fe42a6d22075ac871dd83"
+  integrity sha512-mCPBLkNnY8v9UOcKaWDWzuYo/GsLeexnm3wOI+qwaK0Q4tUOXrJ+BeatBI3HNfbHlpprbOkX5cfoS0ab1GbMhA==
+
 "@vendure/core@0.16.1":
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/@vendure/core/-/core-0.16.1.tgz#7bc726cbc560458bdb5086abe732bc353af9444d"
@@ -3434,13 +3439,13 @@
     semver "^7.3.2"
     tcp-port-used "^1.0.1"
 
-"@vendure/testing@0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@vendure/testing/-/testing-0.16.1.tgz#28f805a858842976bc519955242e77db3b581335"
-  integrity sha512-/orPIljaNjPYbHHlIkkN6MTxAqYaIo3rWazPiURWBKZ84zZu5vOUljOEqWBgUnnHYHu4HWN1N8IzwFXLpi3nlQ==
+"@vendure/testing@0.18.5":
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/@vendure/testing/-/testing-0.18.5.tgz#3c87647a9fabd5879d9a76900df0d1a9c906e87d"
+  integrity sha512-g72St7w6PZgw0KCtywc+qtapjFWHjKanJqPbSAno6OEHM4x8l6OAcsUQL9PmjcN/Vi2sgedgUegIMQPThmVtxw==
   dependencies:
     "@types/node-fetch" "^2.5.4"
-    "@vendure/common" "^0.16.1"
+    "@vendure/common" "^0.18.4"
     faker "^4.1.0"
     form-data "^3.0.0"
     graphql "15.3.0"
